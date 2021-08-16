@@ -30,6 +30,14 @@ export function refreshToken(token) {
   })
 }
 
+export function getUserPermission(data) {
+  return request({
+    url: '/api/userPermission/',
+    method: 'get',
+    params: data
+  })
+}
+
 export function getUserInfo(data) {
   return request({
     url: '/api/user/',

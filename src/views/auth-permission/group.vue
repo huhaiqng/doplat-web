@@ -35,21 +35,7 @@
           <el-input v-model="temp.name" style="width:60%" />
         </el-form-item>
       </el-form>
-      <el-tabs v-if="dialogStatus === 'edit'" v-model="activeName" tab-position="top" type="border-card" style="margin-left:30px;margin-right:30px;">
-        <!-- 全局权限 -->
-        <!-- <el-tab-pane label="设置全局权限" name="first">
-          <div class="tab-pane">
-            <el-scrollbar>
-              <div v-for="item in contentType" :key="item.model">
-                <span>{{ item.title }}</span>
-                <el-checkbox-group v-model="temp.permissions" style="margin-top:10px;margin-bottom:20px;">
-                  <el-checkbox v-for="perm in item.permission" :key="perm.id" :label="perm.id">{{ permName(perm.codename) }}</el-checkbox>
-                </el-checkbox-group>
-              </div>
-            </el-scrollbar>
-          </div>
-        </el-tab-pane> -->
-        <!-- 菜单权限 -->
+      <el-tabs v-if="dialogStatus === 'edit'" v-model="activeName" tab-position="top" type="border-card" style="margin-left:30px;margin-right:30px">
         <el-tab-pane label="设置菜单权限" name="first">
           <div class="tab-pane">
             <el-scrollbar>
@@ -143,30 +129,6 @@ export default {
       this.dialogStatus = 'edit'
       this.contentType = []
       var data = { groupname: this.temp.name }
-      // getContentType().then(response => {
-      //   this.allContentType = response
-      //   getL2Menu().then(response => {
-      //     this.modelMenu = response
-      //     for (var i = 0; i < this.allContentType.length; i++) {
-      //       for (var j = 0; j < this.modelMenu.length; j++) {
-      //         if (this.allContentType[i].id === this.modelMenu[j].name) {
-      //           this.allContentType[i].title = this.modelMenu[j].title
-      //           this.contentType.push(this.allContentType[i])
-      //         }
-      //       }
-      //     }
-      //     getGroupPerms({ groupname: this.temp.name }).then(response => {
-      //       this.checkedModels = response
-      //       for (var x = 0; x < this.checkedModels.length; x++) {
-      //         for (var y = 0; y < this.contentType.length; y++) {
-      //           if (this.checkedModels[x].model === this.contentType[y].model) {
-      //             this.checkedModels[x].title = this.contentType[y].title
-      //           }
-      //         }
-      //       }
-      //     })
-      //   })
-      // })
       // 查询一级菜单，一级菜单自带二级子菜单
       getL1Menu().then(response => {
         this.menus = response
@@ -243,112 +205,6 @@ export default {
       this.selectedObjectsWithPerms = []
       this.activeName = 'first'
     },
-    // permName(codename) {
-    //   var permType = codename.split('_')[0]
-    //   if (permType === 'add') {
-    //     return '新增'
-    //   } else if (permType === 'view') {
-    //     return '查看'
-    //   } else if (permType === 'change') {
-    //     return '编辑'
-    //   } else if (permType === 'delete') {
-    //     return '删除'
-    //   } else {
-    //     return permType
-    //   }
-    // },
-    // getObjects() {
-    //   var params = null
-    //   this.selectedObjects = []
-    //   this.selectedObjectsWithPerms = []
-    //   this.objects = []
-    //   if (this.permTemp.model === 'host') {
-    //     params = { ip: '', type: '', env: '', limit: 10000 }
-    //     getHosts(params).then(response => {
-    //       this.objects = response
-    //     })
-    //   }
-    //   if (this.permTemp.model === 'task') {
-    //     params = { name: '', type: '', page: 0, limit: 10000 }
-    //     getTask(params).then(response => {
-    //       this.objects = response
-    //     })
-    //   }
-    //   if (this.permTemp.model === 'account') {
-    //     params = { use: '', page: 0, limit: 10000 }
-    //     getAccounts(params).then(response => {
-    //       this.objects = response
-    //     })
-    //   }
-    //   if (this.permTemp.model === 'mysqlinstance') {
-    //     params = { inside_addr: '', page: 0, limit: 10000 }
-    //     getMySQLInstance(params).then(response => {
-    //       this.objects = response
-    //     })
-    //   }
-    //   if (this.permTemp.model === 'activemqinstance') {
-    //     params = { inside_addr: '', page: 0, limit: 10000 }
-    //     getActivemqInstance(params).then(response => {
-    //       this.objects = response
-    //     })
-    //   }
-    //   if (this.permTemp.model === 'rabbitmqinstance') {
-    //     params = { inside_addr: '', page: 0, limit: 10000 }
-    //     getRabbitmqInstance(params).then(response => {
-    //       this.objects = response
-    //     })
-    //   }
-    //   if (this.permTemp.model === 'redisinstance') {
-    //     params = { inside_addr: '', page: 0, limit: 10000 }
-    //     getRedisInstance(params).then(response => {
-    //       this.objects = response
-    //     })
-    //   }
-    //   if (this.permTemp.model === 'zookeeperinstance') {
-    //     params = { inside_addr: '', page: 0, limit: 10000 }
-    //     getZookeeperInstance(params).then(response => {
-    //       this.objects = response
-    //     })
-    //   }
-    //   this.objectPermOptions = this.contentType.filter(ct => { return ct.model === this.permTemp.model })[0].permission.filter(c => { return c.codename !== 'add_' + this.permTemp.model })
-    // },
-    // getOptionLabel(item) {
-    //   if (this.permTemp.model === 'host') {
-    //     return item.ip
-    //   } else if (this.permTemp.model === 'mysqlinstance') {
-    //     return item.inside_addr
-    //   } else if (this.permTemp.model === 'activemqinstance') {
-    //     return item.inside_addr
-    //   } else if (this.permTemp.model === 'rabbitmqinstance') {
-    //     return item.inside_addr
-    //   } else if (this.permTemp.model === 'redisinstance') {
-    //     return item.inside_addr
-    //   } else if (this.permTemp.model === 'zookeeperinstance') {
-    //     return item.inside_addr
-    //   } else if (this.permTemp.model === 'account') {
-    //     return item.use
-    //   } else {
-    //     return item.name
-    //   }
-    // },
-    // getObjectPerms() {
-    //   var data = { groupname: this.temp.name, model: this.permTemp.model, objects: this.selectedObjects }
-    //   if (this.dialogStatus === 'edit') {
-    //     getGroupObjectPerms(data).then(response => {
-    //       this.selectedObjectsWithPerms = response
-    //     })
-    //   }
-    // },
-    // setObjectPerms() {
-    //   // 更新对象权限
-    //   if (this.permTemp.model) {
-    //     var data = { groupname: this.temp.name, model: this.permTemp.model, objects: this.selectedObjectsWithPerms }
-    //     setGroupObjectPerms(data)
-    //   }
-    // },
-    // getObjectPermOptions(model) {
-    //   return this.contentType.filter(ct => { return ct.model === model })[0].permission.filter(c => { return c.codename !== 'add_' + model })
-    // },
     checkChange(menu, isCheck) {
       if (!menu.children) {
         if (isCheck) {
