@@ -1,5 +1,5 @@
-import { login, getUserInfo, refreshToken } from '@/api/user'
-import { getToken, getRefreshToken, setToken, setRefreshToken, setUserName, removeToken, removeRefreshToken, removeUserName, removeUserInfo } from '@/utils/auth'
+import { login, getUserInfo, getLoginUser, refreshToken } from '@/api/user'
+import { getToken, getRefreshToken, setToken, setRefreshToken, setUserName, removeToken, removeRefreshToken, removeUserName, removeUserInfo, setIsSuperuser, setMyPerms } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -7,8 +7,6 @@ const getDefaultState = () => {
     token: getToken(),
     id: null,
     userInfo: {}
-    // name: '',
-    // avatar: ''
   }
 }
 
@@ -39,14 +37,16 @@ const actions = {
         setToken(response.access_token)
         setRefreshToken(response.refresh_token)
         setUserName(username)
-        // getUserInfo({ username: username }).then(response => {
-        //   const user = response[0]
-        //   if (!user) {
-        //     reject('无法获取用户信息！')
-        //   }
-        //   setUserInfo(user)
-        //   resolve(userInfo)
-        // })
+        // 获取登录用户信息
+        getLoginUser().then(response => {
+          var my_perms = []
+          my_perms.push.apply(my_perms, response.user_permissions.map(x => { return x.codename }))
+          for (var i = 0; i < response.groups.length; i++) {
+            my_perms.push.apply(my_perms, response.groups[i].permissions.map(x => { return x.codename }))
+          }
+          setIsSuperuser(response.is_superuser)
+          setMyPerms(my_perms)
+        })
         resolve()
       }).catch(error => {
         reject(error)

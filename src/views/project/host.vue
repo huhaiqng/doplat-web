@@ -11,7 +11,7 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button v-if="permStatus.add" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
     </div>
@@ -81,9 +81,8 @@
           <el-dropdown type="primary">
             <el-button size="mini" split-buttion type="primary">操作<i class="el-icon-arrow-down el-icon--right" /></el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="handleUpdate(row)">编辑</el-dropdown-item>
-              <el-dropdown-item @click.native="handleDelete(row.id, $index)">删除</el-dropdown-item>
-              <el-dropdown-item v-if="row.status" @click.native="hostProblem(row, false)">标记故障</el-dropdown-item>
+              <el-dropdown-item v-if="permStatus.change" @click.native="handleUpdate(row)">编辑</el-dropdown-item>
+              <el-dropdown-item v-if="permStatus.delete" @click.native="handleDelete(row.id, $index)">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -219,6 +218,7 @@ import { getHosts, addHost, updateHost, deleteHost, getEnv } from '@/api/project
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { encrypt, decrypt } from '@/utils/aes'
+import { getIsSuperuser, getMyPerms } from '@/utils/auth'
 import HostDrawerContent from '@/components/Drawer/HostDrawerContent'
 
 export default {
@@ -273,14 +273,22 @@ export default {
         create: '添加',
         detail: '详情'
       },
+      permStatus: {
+        add: false,
+        change: false,
+        delete: false
+      },
       downloadLoading: false,
       drawerVisible: false,
       tableHeader: [],
       uploadSuccessCount: 0,
-      uploadFailCount: 0
+      uploadFailCount: 0,
+      is_superuser: false,
+      my_perms: []
     }
   },
   created() {
+    this.getPermStstus()
     this.getList()
     getEnv().then(response => {
       this.envOptions = response
@@ -292,6 +300,24 @@ export default {
         this.list = response.results
         this.total = response.count
       })
+    },
+    getPermStstus() {
+      this.is_superuser = getIsSuperuser()
+      this.my_perms = getMyPerms()
+      if (this.is_superuser === 'true') {
+        this.permStatus.add = true
+        this.permStatus.change = true
+        this.permStatus.delete = true
+      }
+      if (this.my_perms.indexOf('add_host') > -1) {
+        this.permStatus.add = true
+      }
+      if (this.my_perms.indexOf('change_host') > -1) {
+        this.permStatus.change = true
+      }
+      if (this.my_perms.indexOf('delete_host') > -1) {
+        this.permStatus.delete = true
+      }
     },
     handleFilter() {
       this.listQuery.page = 1

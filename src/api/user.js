@@ -30,11 +30,10 @@ export function refreshToken(token) {
   })
 }
 
-export function getUserPermission(data) {
+export function getLoginUser() {
   return request({
-    url: '/api/userPermission/',
-    method: 'get',
-    params: data
+    url: '/api/getLoginUser/',
+    method: 'get'
   })
 }
 

@@ -28,20 +28,36 @@ export function removeRefreshToken() {
 
 // userNmae
 export function setUserName(username) {
-  return sessionStorage.setItem('FA0zrJIe', username)
+  return sessionStorage.setItem('doplat_username', username)
 }
 
 export function removeUserName() {
-  return sessionStorage.removeItem('FA0zrJIe')
+  return sessionStorage.removeItem('doplat_username')
 }
 
 export function getUserName() {
-  return sessionStorage.getItem('FA0zrJIe')
+  return sessionStorage.getItem('doplat_username')
 }
 
 // userInfo
 export function setUserInfo(userInfo) {
   return sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
+}
+
+export function setIsSuperuser(is_superuser) {
+  return sessionStorage.setItem('is_superuser', is_superuser)
+}
+
+export function getIsSuperuser() {
+  return sessionStorage.getItem('is_superuser')
+}
+
+export function setMyPerms(my_perms) {
+  return sessionStorage.setItem('my_perms', my_perms)
+}
+
+export function getMyPerms() {
+  return sessionStorage.getItem('my_perms')
 }
 
 export function getUserInfo() {

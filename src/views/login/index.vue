@@ -63,8 +63,6 @@
 </template>
 
 <script>
-import { getUserPermission } from '@/api/user'
-
 export default {
   name: 'Login',
   data() {
@@ -131,10 +129,6 @@ export default {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              getUserPermission({ username: this.loginForm.username }).then(response => {
-                console.log(response)
-              })
-
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             })
