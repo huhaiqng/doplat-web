@@ -1,5 +1,6 @@
 import { constantRoutes } from '@/router'
-import { getL1Menu, getL2Menu } from '@/api/user'
+import { getL1Menu } from '@/api/authperm/l1menu'
+import { getL2Menu } from '@/api/authperm/l2menu'
 import Layout from '@/layout'
 import { getUserName } from '@/utils/auth'
 import router from '@/router'

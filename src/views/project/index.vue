@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { getOneProjectInfo, getProjectForConfig } from '@/api/project'
+import { getOneProjectInfo, getProjectForConfig } from '@/api/project/index'
 
 export default {
   name: 'Project',

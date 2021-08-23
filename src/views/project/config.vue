@@ -78,7 +78,9 @@
 </template>
 
 <script>
-import { addConfig, deleteConfig, updateConfig, getConfig, getEnv, getProjectForConfig } from '@/api/project'
+import { addConfig, deleteConfig, updateConfig, getConfig } from '@/api/project/config'
+import { getEnv } from '@/api/project/env'
+import { getProjectForConfig } from '@/api/project/index'
 import Pagination from '@/components/Pagination'
 import Tinymce from '@/components/Tinymce'
 export default {

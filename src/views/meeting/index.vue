@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import { getUserHostedInfo } from '@/api/user'
+import { getUserHostedInfo } from '@/api/authperm/user'
 export default {
   name: 'Meeting',
   data() {

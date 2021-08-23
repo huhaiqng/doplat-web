@@ -163,7 +163,7 @@
 </template>
 
 <script>
-import { addMySQL, deleteMySQL, updateMySQL, getMySQL } from '@/api/project'
+import { addMySQL, deleteMySQL, updateMySQL, getMySQL } from '@/api/project/mysql'
 import Pagination from '@/components/Pagination'
 import MysqlDrawer from '@/components/Drawer/mysql'
 import { encrypt, decrypt } from '@/utils/aes'

@@ -97,7 +97,8 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination'
-import { getUser, addUser, updateUser, deleteUser, getGroup } from '@/api/auth-permission'
+import { getUser, addUser, updateUser, deleteUser } from '@/api/authperm/user'
+import { getGroup } from '@/api/authperm/group'
 import { validPassword } from '@/utils/validate'
 export default {
   name: 'Software',

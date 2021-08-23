@@ -42,7 +42,7 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination'
-import { getTaskResult } from '@/api/project'
+import { getTaskResult } from '@/api/project/task'
 export default {
   name: 'TaskResult',
   components: { Pagination },

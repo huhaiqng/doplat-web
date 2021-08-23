@@ -156,7 +156,9 @@
 </template>
 
 <script>
-import { getMiddlewareList, addMiddleware, updateMiddleware, deleteMiddleware, getEnv, getProjectForConfig } from '@/api/project'
+import { getMiddlewareList, addMiddleware, updateMiddleware, deleteMiddleware } from '@/api/project/middleware'
+import { getEnv } from '@/api/project/env'
+import { getProjectForConfig } from '@/api/project/index'
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
 import { encrypt, decrypt } from '@/utils/aes'

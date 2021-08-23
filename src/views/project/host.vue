@@ -214,7 +214,8 @@
 </template>
 
 <script>
-import { getHosts, addHost, updateHost, deleteHost, getEnv } from '@/api/project'
+import { getHosts, addHost, updateHost, deleteHost } from '@/api/project/host'
+import { getEnv } from '@/api/project/env'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { encrypt, decrypt } from '@/utils/aes'
