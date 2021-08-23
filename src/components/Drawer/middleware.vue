@@ -6,43 +6,22 @@
           <h3 class="drawer-title">详情</h3>
           <div class="drawer-item">
             <el-row>
-              <el-col :span="8">内网地址：</el-col>
-              <el-col :span="16">{{ instance.inside_addr }}</el-col>
+              <el-col :span="8">连接地址：</el-col>
+              <el-col :span="16">{{ instance.conn_addr }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="8">外网地址：</el-col>
-              <el-col :span="16">{{ instance.outside_addr }}</el-col>
+              <el-col :span="8">Web 地址：</el-col>
+              <el-col :span="16">{{ instance.web_addr }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="8">角色：</el-col>
-              <el-col :span="16">{{ instance.role }}</el-col>
-            </el-row>
-          </div>
-
-          <div class="drawer-item">
-            <el-row>
-              <el-col :span="8">数据库路径：</el-col>
-              <el-col :span="16">{{ instance.data_dir }}</el-col>
-            </el-row>
-          </div>
-
-          <div class="drawer-item">
-            <el-row>
-              <el-col :span="8">版本号：</el-col>
-              <el-col :span="16">{{ instance.version }}</el-col>
-            </el-row>
-          </div>
-
-          <div class="drawer-item">
-            <el-row>
-              <el-col :span="8">管理员：</el-col>
-              <el-col :span="16">{{ instance.manager }}</el-col>
+              <el-col :span="8">用户名：</el-col>
+              <el-col :span="16">{{ instance.username }}</el-col>
             </el-row>
           </div>
 
@@ -55,22 +34,33 @@
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="8">部署方式：</el-col>
-              <el-col :span="16">{{ instance.method }}</el-col>
+              <el-col :span="8">类别：</el-col>
+              <el-col :span="16">{{ instance.type }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="8">来源：</el-col>
-              <el-col :span="16">{{ instance.origin }}</el-col>
+              <el-col :span="8">项目：</el-col>
+              <el-col :span="16">
+                <span v-for="p in instance.project" :key="p.id">
+                  <div>{{ p.name }}</div>
+                </span>
+              </el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="8">备注：</el-col>
-              <el-col :span="16">{{ instance.cluster }}</el-col>
+              <el-col :span="8">环境：</el-col>
+              <el-col :span="16">{{ instance.env.name }}</el-col>
+            </el-row>
+          </div>
+
+          <div class="drawer-item">
+            <el-row>
+              <el-col :span="8">集群：</el-col>
+              <el-col :span="16">{{ instance.clust }}</el-col>
             </el-row>
           </div>
 
@@ -89,7 +79,7 @@
 
 <script>
 export default {
-  name: 'MysqlInstanceDrawer',
+  name: 'MiddlewareDrawer',
   props: {
     instance: { type: Object, default: null }
   }

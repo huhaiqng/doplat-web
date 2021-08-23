@@ -7,113 +7,113 @@
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">显示名称：</el-col>
-              <el-col :span="12">{{ host.name }}</el-col>
+              <el-col :span="8">显示名称：</el-col>
+              <el-col :span="16">{{ host.name }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">主机名：</el-col>
-              <el-col :span="12">{{ host.hostname }}</el-col>
+              <el-col :span="8">主机名：</el-col>
+              <el-col :span="16">{{ host.hostname }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">内网 IP：</el-col>
-              <el-col :span="12">{{ host.inside_ip }}</el-col>
+              <el-col :span="8">内网 IP：</el-col>
+              <el-col :span="16">{{ host.inside_ip }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">外网 IP：</el-col>
-              <el-col :span="12">{{ host.outside_ip }}</el-col>
+              <el-col :span="8">外网 IP：</el-col>
+              <el-col :span="16">{{ host.outside_ip }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">内网端口号：</el-col>
-              <el-col :span="12">{{ host.inside_port }}</el-col>
+              <el-col :span="8">内网端口号：</el-col>
+              <el-col :span="16">{{ host.inside_port }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">外网端口号：</el-col>
-              <el-col :span="12">{{ host.outside_port }}</el-col>
+              <el-col :span="8">外网端口号：</el-col>
+              <el-col :span="16">{{ host.outside_port }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">系统：</el-col>
-              <el-col :span="12">{{ host.os }}</el-col>
+              <el-col :span="8">系统：</el-col>
+              <el-col :span="16">{{ host.os }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">CPU 核数：</el-col>
-              <el-col :span="12">{{ host.cpu }}</el-col>
+              <el-col :span="8">CPU 核数：</el-col>
+              <el-col :span="16">{{ host.cpu }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">内存大小：</el-col>
-              <el-col :span="12">{{ host.memory }}</el-col>
+              <el-col :span="8">内存大小：</el-col>
+              <el-col :span="16">{{ host.memory }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">硬盘大小：</el-col>
-              <el-col :span="12">{{ host.disk }}</el-col>
+              <el-col :span="8">硬盘大小：</el-col>
+              <el-col :span="16">{{ host.disk }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">位置：</el-col>
-              <el-col :span="12">{{ host.cloud }}</el-col>
+              <el-col :span="8">位置：</el-col>
+              <el-col :span="16">{{ host.cloud }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">云账号：</el-col>
-              <el-col :span="12">{{ host.cloud_user }}</el-col>
+              <el-col :span="8">云账号：</el-col>
+              <el-col :span="16">{{ host.cloud_user }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">环境：</el-col>
-              <el-col :span="12">{{ host.env }}</el-col>
+              <el-col :span="8">环境：</el-col>
+              <el-col :span="16">{{ host.env }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">用户：</el-col>
-              <el-col :span="12">{{ host.user }}</el-col>
+              <el-col :span="8">用户：</el-col>
+              <el-col :span="16">{{ host.user }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">密码：</el-col>
-              <el-col :span="12">{{ host.password }}</el-col>
+              <el-col :span="8">密码：</el-col>
+              <el-col :span="16">{{ host.password }}</el-col>
             </el-row>
           </div>
 
           <div class="drawer-item">
             <el-row>
-              <el-col :span="12">创建时间：</el-col>
-              <el-col :span="12">{{ host.created | parseTime('{y}-{m}-{d} {h}:{m}') }}</el-col>
+              <el-col :span="8">创建时间：</el-col>
+              <el-col :span="16">{{ host.created | parseTime('{y}-{m}-{d} {h}:{m}') }}</el-col>
             </el-row>
           </div>
 
