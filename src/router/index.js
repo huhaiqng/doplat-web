@@ -69,15 +69,15 @@ export const constantRoutes = [
   // },
 
   {
-    path: '/project',
+    path: '',
     component: Layout,
-    redirect: '/project/index',
-    name: 'Project',
+    redirect: '/projectdetail',
+    name: 'Projectdetail',
     children: [
       {
-        path: 'index',
-        name: 'ProjectIndex',
-        component: () => import('@/views/project/index'),
+        path: 'projectdetail',
+        name: 'Projectdetail',
+        component: () => import('@/views/project/projectdetail'),
         meta: { title: '项目信息', icon: 'tree' }
       }
     ]

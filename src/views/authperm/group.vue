@@ -58,7 +58,7 @@
 <script>
 import Pagination from '@/components/Pagination'
 import { getGroup, addGroup, updateGroup, deleteGroup, getGroupL2menu, setGroupObjectPerms } from '@/api/authperm/group'
-import { getL1Menu } from '@/api/authperm/user'
+import { getL1Menu } from '@/api/authperm/l1menu'
 
 export default {
   name: 'Group',

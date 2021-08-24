@@ -125,10 +125,10 @@
 </template>
 
 <script>
-import { getOneProjectInfo, getProjectForConfig } from '@/api/project/index'
+import { getOneProjectInfo, getProjectName } from '@/api/project/project'
 
 export default {
-  name: 'Project',
+  name: 'ProjectDetail',
   data() {
     return {
       projects: null,
@@ -143,7 +143,7 @@ export default {
     }
   },
   created() {
-    getProjectForConfig().then(response => {
+    getProjectName().then(response => {
       this.projects = response
 
       if (this.projects.length > 0) {

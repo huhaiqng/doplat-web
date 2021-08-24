@@ -28,3 +28,9 @@ export function deleteHost(id) {
     method: 'delete'
   })
 }
+export function getHostsSimple() {
+  return request({
+    url: '/api/hosts-simple/',
+    method: 'get'
+  })
+}

@@ -80,7 +80,7 @@
 <script>
 import { addConfig, deleteConfig, updateConfig, getConfig } from '@/api/project/config'
 import { getEnv } from '@/api/project/env'
-import { getProjectForConfig } from '@/api/project/index'
+import { getProjectName } from '@/api/project/project'
 import Pagination from '@/components/Pagination'
 import Tinymce from '@/components/Tinymce'
 export default {
@@ -119,7 +119,7 @@ export default {
     getEnv().then(response => {
       this.envList = response
     })
-    getProjectForConfig().then(response => {
+    getProjectName().then(response => {
       this.projectList = response
     })
   },

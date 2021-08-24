@@ -1,16 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.conn_addr" placeholder="连接地址" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.type" placeholder="类别" clearable class="filter-item" style="width: 200px">
-        <el-option v-for="item in type_options" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.env" placeholder="环境" clearable class="filter-item" style="width: 200px">
-        <el-option v-for="item in env_list" :key="item.id" :label="item.name" :value="item.id" />
-      </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        搜索
-      </el-button>
+      <el-input v-model="listQuery.name" placeholder="名称" style="width: 400px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button v-if="permStatus.add" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
@@ -18,7 +9,7 @@
 
     <el-table
       :key="tableKey"
-      :data="middleware_list"
+      :data="project_list"
       border
       fit
       highlight-current-row
@@ -29,36 +20,43 @@
           <span>{{ $index + 1 + (listQuery.page - 1)*listQuery.limit }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="连接地址">
+      <el-table-column label="名称" width="200px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="showDetail(row)">{{ row.conn_addr }}</span>
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Web 地址">
+      <el-table-column label="简称" width="150px">
         <template slot-scope="{row}">
-          <span class="link-type"><el-link type="primary" :underline="false" :href="row.web_addr" target="_blank">{{ row.web_addr }}</el-link></span>
+          <span>{{ row.alias }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="类别" width="150px">
+      <el-table-column label="管理用户" width="80px">
         <template slot-scope="{row}">
-          <span>{{ row.type }}</span>
+          <span>{{ row.user }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="集群" width="150px">
+      <el-table-column label="部署路径">
         <template slot-scope="{row}">
-          <span>{{ row.cluster }}</span>
+          <span>{{ row.deploy_dir }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="环境" width="150px">
+      <el-table-column label="日志路径">
         <template slot-scope="{row}">
-          <span>{{ row.env.name }}</span>
+          <span>{{ row.log_dir }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目" width="150px">
+      <el-table-column label="主机" width="200px">
         <template slot-scope="{row}">
-          <span v-for="p in row.project" :key="p.id">
-            <div>{{ p.name }}</div>
+          <span v-for="h in row.hosts" :key="h.id">
+            <div>{{ h.env }} - {{ h.inside_ip }}</div>
           </span>
+        </template>
+      </el-table-column>
+      <el-table-column label="使用中" width="80px" align="center">
+        <template slot-scope="{row}">
+          <el-tag size="small" :type="row.used?'success':'info'">
+            {{ row.used?"是":"否" }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="150px">
@@ -85,57 +83,46 @@
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="100px" style="margin-right:30px; margin-left:30px;">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="类别" prop="type">
-              <el-select v-model="temp.type" class="filter-item">
-                <el-option v-for="item in type_options" :key="item" :label="item" :value="item" />
-              </el-select>
+            <el-form-item label="名称" prop="name">
+              <el-input v-model="temp.name" style="width:80%" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="环境" prop="env">
-              <el-select v-model="temp.env" class="filter-item">
-                <el-option v-for="item in env_list" :key="item.id" :label="item.name" :value="item.id" />
-              </el-select>
+            <el-form-item label="简称" prop="alias">
+              <el-input v-model="temp.alias" style="width:80%" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="项目" prop="project">
-              <el-select v-model="temp.project" class="filter-item" filterable clearable multiple style="width:80%">
-                <el-option v-for="item in project_list" :key="item.id" :label="item.name" :value="item.id" />
+            <el-form-item label="主机" prop="hosts">
+              <el-select v-model="temp.hosts" class="filter-item" filterable clearable multiple style="width:80%">
+                <el-option v-for="item in host_list" :key="item.id" :label="item.inside_ip" :value="item.id" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="集群" prop="cluster">
-              <el-input v-model="temp.cluster" style="width:80%" />
+            <el-form-item label="管理用户" prop="user">
+              <el-input v-model="temp.user" style="width:80%" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="temp.username" style="width:80%" />
+            <el-form-item label="部署路径" prop="deploy_dir">
+              <el-input v-model="temp.deploy_dir" style="width:80%" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="temp.password" style="width:80%" />
+            <el-form-item label="日志路径" prop="log_dir">
+              <el-input v-model="temp.log_dir" style="width:80%" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="16">
-            <el-form-item label="连接地址" prop="conn_addr">
-              <el-input v-model="temp.conn_addr" style="width:80%" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="16">
-            <el-form-item label="Web 地址" prop="web_addr">
-              <el-input v-model="temp.web_addr" style="width:80%" />
+            <el-form-item label="超级用户" prop="used">
+              <el-checkbox v-model="temp.used">使用中</el-checkbox>
             </el-form-item>
           </el-col>
         </el-row>
@@ -149,53 +136,41 @@
         </el-button>
       </div>
     </el-dialog>
-    <el-drawer title="详情" :visible.sync="drawerVisible" :with-header="false">
-      <middleware-drawer :instance="tempDetail" />
-    </el-drawer>
   </div>
 </template>
 
 <script>
-import { getMiddlewareList, addMiddleware, updateMiddleware, deleteMiddleware } from '@/api/project/middleware'
-import { getEnv } from '@/api/project/env'
-import { getProjectName } from '@/api/project/project'
+import { getProjectList, addProject, updateProject, deleteProject } from '@/api/project/project'
+import { getHostsSimple } from '@/api/project/host'
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
-import { encrypt, decrypt } from '@/utils/aes'
 import { getIsSuperuser, getMyPerms } from '@/utils/auth'
-import MiddlewareDrawer from '@/components/Drawer/middleware'
 
 export default {
-  name: 'Middleware',
-  components: { Pagination, MiddlewareDrawer },
+  name: 'Project',
+  components: { Pagination },
   directives: { waves },
   data() {
     return {
       tableKey: 0,
-      middleware_list: null,
-      env_list: null,
       project_list: null,
+      host_list: null,
       total: 0,
       listQuery: {
-        conn_ip: '',
-        type: '',
-        env: '',
+        name: '',
         page: 1,
         limit: 10
       },
-      type_options: ['redis', 'activemq', 'rabbitmq', 'zookeeper'],
       temp: {
-        conn_addr: '',
-        web_addr: undefined,
-        username: undefined,
-        password: undefined,
-        type: '',
-        project: '',
-        env: undefined,
-        cluster: '单节点'
+        name: '',
+        alias: undefined,
+        hosts: undefined,
+        deploy_dir: '/data',
+        user: 'www',
+        log_dir: '/data/log',
+        used: true
       },
       tempCopy: undefined,
-      tempDetail: undefined,
       dialogVisible: false,
       dialogStatus: '',
       textMap: {
@@ -208,7 +183,6 @@ export default {
         change: false,
         delete: false
       },
-      drawerVisible: false,
       is_superuser: false,
       my_perms: []
     }
@@ -217,17 +191,14 @@ export default {
     this.getPermStstus()
     this.getList()
 
-    getEnv().then(response => {
-      this.env_list = response
-    })
-    getProjectName().then(response => {
-      this.project_list = response
+    getHostsSimple().then(response => {
+      this.host_list = response
     })
   },
   methods: {
     getList() {
-      getMiddlewareList(this.listQuery).then(response => {
-        this.middleware_list = response.results
+      getProjectList(this.listQuery).then(response => {
+        this.project_list = response.results
         this.total = response.count
       })
     },
@@ -262,16 +233,14 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        conn_addr: undefined,
-        web_addr: undefined,
-        username: undefined,
-        password: undefined,
-        type: undefined,
-        project: undefined,
-        env: undefined,
-        cluster: '单节点'
+        name: '',
+        alias: undefined,
+        hosts: undefined,
+        deploy_dir: '/data',
+        user: 'www',
+        log_dir: '/data/log',
+        used: true
       }
-      this.passwordType = 'password'
     },
     handleCreate() {
       this.resetTemp()
@@ -281,9 +250,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.tempCopy = Object.assign({}, this.temp)
-          this.tempCopy.password = encrypt(this.tempCopy.password)
-          addMiddleware(this.tempCopy).then(() => {
+          addProject(this.temp).then(() => {
             this.getList()
             this.dialogVisible = false
             this.$notify({
@@ -298,18 +265,14 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
-      this.temp.project = row.project.map(s => { return s.id })
-      this.temp.env = row.env.id
-      this.temp.password = decrypt(this.temp.password)
+      this.temp.hosts = row.hosts.map(s => { return s.id })
       this.dialogStatus = 'update'
       this.dialogVisible = true
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.tempCopy = Object.assign({}, this.temp)
-          this.tempCopy.password = encrypt(this.tempCopy.password)
-          updateMiddleware(this.tempCopy).then(() => {
+          updateProject(this.temp).then(() => {
             this.getList()
             this.dialogVisible = false
             this.$notify({
@@ -328,7 +291,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteMiddleware(id).then(() => {
+        deleteProject(id).then(() => {
           this.$notify({
             title: '成功',
             message: '删除成功！',
@@ -343,11 +306,6 @@ export default {
           message: '已取消删除'
         })
       })
-    },
-    showDetail(row) {
-      this.tempDetail = Object.assign({}, row)
-      this.tempDetail.password = decrypt(this.tempDetail.password)
-      this.drawerVisible = true
     }
   }
 }
