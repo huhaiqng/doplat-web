@@ -73,7 +73,7 @@
           <el-input v-model="temp.url" style="width:80%" />
         </el-form-item>
         <el-form-item label="常用的" prop="popular">
-          <el-checkbox v-model="temp.popular"></el-checkbox>
+          <el-checkbox v-model="temp.popular" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

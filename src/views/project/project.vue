@@ -122,7 +122,7 @@
         <el-row>
           <el-col :span="16">
             <el-form-item label="使用中" prop="used">
-              <el-checkbox v-model="temp.used"></el-checkbox>
+              <el-checkbox v-model="temp.used" />
             </el-form-item>
           </el-col>
         </el-row>
