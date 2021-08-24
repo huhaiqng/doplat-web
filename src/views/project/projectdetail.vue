@@ -81,7 +81,7 @@
                   >
                     <el-table-column label="模块名">
                       <template slot-scope="{row}">
-                        <span>{{ row.module }}</span>
+                        <span>{{ row.name }}</span>
                       </template>
                     </el-table-column>
                     <el-table-column label="包名" width="400px">
