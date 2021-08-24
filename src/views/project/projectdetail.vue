@@ -28,7 +28,7 @@
                     </el-table-column>
                     <el-table-column label="地址">
                       <template slot-scope="{row}">
-                        <span class="link-type"><el-link type="primary" :href="row.url" target="_blank">{{ row.url }}</el-link></span>
+                        <span class="link-type"><el-link type="primary" :underline="false" :href="row.url" target="_blank">{{ row.url }}</el-link></span>
                       </template>
                     </el-table-column>
                   </el-table>

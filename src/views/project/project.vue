@@ -121,8 +121,8 @@
         </el-row>
         <el-row>
           <el-col :span="16">
-            <el-form-item label="超级用户" prop="used">
-              <el-checkbox v-model="temp.used">使用中</el-checkbox>
+            <el-form-item label="使用中" prop="used">
+              <el-checkbox v-model="temp.used"></el-checkbox>
             </el-form-item>
           </el-col>
         </el-row>
