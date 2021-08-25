@@ -1,7 +1,7 @@
 import { getUserInfo, getLoginUser } from '@/api/authperm/user'
 import { login, refreshToken } from '@/api/authperm/login'
 import { getToken, getRefreshToken, setToken, setRefreshToken, setUserName, removeToken, removeRefreshToken, removeUserName, removeUserInfo, setIsSuperuser, setMyPerms } from '@/utils/auth'
-import { resetRouter } from '@/router'
+// import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
@@ -76,7 +76,7 @@ const actions = {
       // commit('SET_USERINFO', null)
       removeToken()
       removeRefreshToken()
-      resetRouter()
+      // resetRouter()
       removeUserName()
       removeUserInfo()
       // dispatch('tagsView/delAllViews', null, { root: true })
