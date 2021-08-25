@@ -43,7 +43,10 @@ service.interceptors.response.use(
   error => {
     if (error.response.status === 401) {
       store.dispatch('user/resetToken')
-    } else if (error.response.status >= 400) {
+    } else if (error.response.status === 400) {
+      store.dispatch('user/logout')
+      location.reload()
+    } else if (error.response.status > 400) {
       Message({
         message: error.response.data,
         type: 'warning'

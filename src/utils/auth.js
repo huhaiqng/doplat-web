@@ -2,41 +2,41 @@
 
 // tonken
 export function getToken() {
-  return sessionStorage.getItem('access_token')
+  return localStorage.getItem('access_token')
 }
 
 export function setToken(token) {
-  return sessionStorage.setItem('access_token', token)
+  return localStorage.setItem('access_token', token)
 }
 
 export function removeToken() {
-  return sessionStorage.removeItem('access_token')
+  return localStorage.removeItem('access_token')
 }
 
 // refresh_token
 export function getRefreshToken() {
-  return sessionStorage.getItem('refresh_token')
+  return localStorage.getItem('refresh_token')
 }
 
 export function setRefreshToken(token) {
-  return sessionStorage.setItem('refresh_token', token)
+  return localStorage.setItem('refresh_token', token)
 }
 
 export function removeRefreshToken() {
-  return sessionStorage.removeItem('refresh_token')
+  return localStorage.removeItem('refresh_token')
 }
 
 // userNmae
 export function setUserName(username) {
-  return sessionStorage.setItem('doplat_username', username)
+  return localStorage.setItem('doplat_username', username)
 }
 
 export function removeUserName() {
-  return sessionStorage.removeItem('doplat_username')
+  return localStorage.removeItem('doplat_username')
 }
 
 export function getUserName() {
-  return sessionStorage.getItem('doplat_username')
+  return localStorage.getItem('doplat_username')
 }
 
 // userInfo
