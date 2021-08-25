@@ -234,18 +234,19 @@ export default {
     getPermStstus() {
       this.is_superuser = getIsSuperuser()
       this.my_perms = getMyPerms()
+      console.log(this.is_superuser)
       if (this.is_superuser === 'true') {
         this.permStatus.add = true
         this.permStatus.change = true
         this.permStatus.delete = true
       }
-      if (this.my_perms.indexOf('add_host') > -1) {
+      if (this.my_perms.indexOf('add_middleware') > -1) {
         this.permStatus.add = true
       }
-      if (this.my_perms.indexOf('change_host') > -1) {
+      if (this.my_perms.indexOf('change_middleware') > -1) {
         this.permStatus.change = true
       }
-      if (this.my_perms.indexOf('delete_host') > -1) {
+      if (this.my_perms.indexOf('delete_middleware') > -1) {
         this.permStatus.delete = true
       }
     },
