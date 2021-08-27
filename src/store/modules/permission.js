@@ -2,7 +2,6 @@ import { constantRoutes } from '@/router'
 import { getL1Menu } from '@/api/authperm/l1menu'
 import { getL2Menu } from '@/api/authperm/l2menu'
 import Layout from '@/layout'
-import { getUserName } from '@/utils/auth'
 import router from '@/router'
 import { getLoginUser } from '@/api/authperm/user'
 // import Vue from 'vue'
@@ -72,8 +71,7 @@ const actions = {
       var l2menus = []
       getL1Menu().then(response => {
         l1menus = response
-        var username = getUserName()
-        getL2Menu({ 'username': username }).then(response => {
+        getL2Menu().then(response => {
           l2menus = response
           for (var i = 0; i < l1menus.length; i++) {
             l1menus[i].children = []
