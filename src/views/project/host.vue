@@ -219,8 +219,8 @@ import { getEnv } from '@/api/project/env'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { encrypt, decrypt } from '@/utils/aes'
-import { getIsSuperuser, getMyPerms } from '@/utils/auth'
 import HostDrawerContent from '@/components/Drawer/HostDrawerContent'
+import store from '@/store'
 
 export default {
   name: 'Host',
@@ -303,8 +303,8 @@ export default {
       })
     },
     getPermStstus() {
-      this.is_superuser = getIsSuperuser()
-      this.my_perms = getMyPerms()
+      this.is_superuser = store.getters.is_superuser
+      this.my_perms = store.getters.my_perms
       if (this.is_superuser === 'true') {
         this.permStatus.add = true
         this.permStatus.change = true

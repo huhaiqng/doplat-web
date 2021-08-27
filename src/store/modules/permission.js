@@ -4,6 +4,7 @@ import { getL2Menu } from '@/api/authperm/l2menu'
 import Layout from '@/layout'
 import { getUserName } from '@/utils/auth'
 import router from '@/router'
+import { getLoginUser } from '@/api/authperm/user'
 // import Vue from 'vue'
 
 /**
@@ -20,7 +21,9 @@ import router from '@/router'
 
 const state = {
   routes: [],
-  addRoutes: []
+  addRoutes: [],
+  my_perms: [],
+  is_superuser: false
 }
 
 const mutations = {
@@ -28,6 +31,12 @@ const mutations = {
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
     router.addRoutes(state.addRoutes)
+  },
+  SET_MYPERMS: (state, my_perms) => {
+    state.my_perms = my_perms
+  },
+  SET_ISSUPERUSER: (state, is_superuser) => {
+    state.is_superuser = is_superuser
   }
 }
 
@@ -85,6 +94,20 @@ const actions = {
         })
       }).catch(error => {
         console.log(error)
+      })
+    })
+  },
+  myPerms({ commit }) {
+    return new Promise(resolve => {
+      getLoginUser().then(response => {
+        var my_perms = []
+        my_perms.push.apply(my_perms, response.user_permissions.map(x => { return x.codename }))
+        for (var i = 0; i < response.groups.length; i++) {
+          my_perms.push.apply(my_perms, response.groups[i].permissions.map(x => { return x.codename }))
+        }
+        commit('SET_MYPERMS', my_perms)
+        commit('SET_ISSUPERUSER', response.is_superuser)
+        resolve()
       })
     })
   }

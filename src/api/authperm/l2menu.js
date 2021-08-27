@@ -7,3 +7,10 @@ export function getL2Menu(data) {
     params: data
   })
 }
+
+export function getL2MenuContentType() {
+  return request({
+    url: '/api/getL2MenuContentType/',
+    method: 'get'
+  })
+}

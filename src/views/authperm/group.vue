@@ -24,7 +24,7 @@
       <el-table-column label="操作" align="center" width="150px">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="deleteData(row.id,$index)">删除</el-button>
+          <el-button type="danger" size="mini" @click="deleteData(row, $index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -35,11 +35,25 @@
           <el-input v-model="temp.name" style="width:60%" />
         </el-form-item>
       </el-form>
-      <el-tabs v-if="dialogStatus === 'edit'" v-model="activeName" tab-position="top" type="border-card" style="margin-left:30px;margin-right:30px">
+      <el-tabs v-show="dialogStatus === 'edit'" v-model="activeName" tab-position="top" type="border-card">
         <el-tab-pane label="设置菜单权限" name="first">
           <div class="tab-pane">
             <el-scrollbar>
-              <el-tree ref="tree" :data="menus" show-checkbox node-key="id" default-expand-all :props="defaultProps" :default-checked-keys="groupL2menu" @check-change="checkChange" />
+              <el-tree ref="tree" :data="menus" show-checkbox node-key="id" default-expand-all :props="defaultProps" :default-checked-keys="groupL2menu" @check-change="menueCheckChange" />
+            </el-scrollbar>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="设置全局权限" name="second">
+          <div class="tab-pane">
+            <el-scrollbar>
+              <div v-for="item in contenttype_list" :key="item.title" style="margin-left:30px;margin-right:30px">
+                <div>{{ item.title }}</div>
+                <el-checkbox-group v-model="temp.permissions" style="margin-top:10px;margin-bottom:20px;">
+                  <el-checkbox v-for="perm in item.perms" :key="perm.id" :label="perm.id" style="margin-top:10px;margin-bottom:20px;">
+                    {{ permName(perm.codename) }}
+                  </el-checkbox>
+                </el-checkbox-group>
+              </div>
             </el-scrollbar>
           </div>
         </el-tab-pane>
@@ -59,6 +73,8 @@
 import Pagination from '@/components/Pagination'
 import { getGroup, addGroup, updateGroup, deleteGroup, getGroupL2menu, setGroupObjectPerms } from '@/api/authperm/group'
 import { getL1Menu } from '@/api/authperm/l1menu'
+import { getL2MenuContentType } from '@/api/authperm/l2menu'
+import { getPermissionList } from '@/api/authperm/permission'
 
 export default {
   name: 'Group',
@@ -92,60 +108,26 @@ export default {
         edit: '编辑'
       },
       activeName: 'first',
-      contentType: [],
-      allContentType: [],
-      labelMap: {
-        host: 'ip'
-      },
-      permTemp: {
-        model: '',
-        selectedObjectsId: [],
-        permissions: []
-      },
-      objects: [],
-      selectedObjects: [],
-      selectedObjectsWithPerms: [],
-      objectPermOptions: [],
-      checkedModels: []
+      permission_list: [],
+      contenttype_list: [],
+      // 有 conttenttype 的二级菜单
+      l2wct_list: []
     }
   },
   created() {
     this.getList()
   },
   methods: {
-    handleCreate() {
-      this.dialogVisible = true
-      this.resetTemp()
-      this.dialogStatus = 'create'
-    },
-    handleUpdate(row) {
-      this.checkedModels = []
-      this.permTemp.model = null
-      this.selectedObjects = []
-      this.selectedObjectsWithPerms = []
-      this.activeName = 'first'
-      this.temp = Object.assign({}, row)
-      this.dialogVisible = true
-      this.dialogStatus = 'edit'
-      this.contentType = []
-      var data = { groupname: this.temp.name }
-      // 查询一级菜单，一级菜单自带二级子菜单
-      getL1Menu().then(response => {
-        this.menus = response
-        for (var i = 0; i < this.menus.length; i++) {
-          this.menus[i].id = 'l1' + this.menus[i].id
-        }
-      })
-      // 查询已有权限的二级菜单
-      getGroupL2menu(data).then(response => {
-        this.groupL2menu = response
-      })
-    },
     getList() {
       getGroup(this.listQuery).then(response => {
         this.list = response.results
         this.total = response.count
       })
+    },
+    handleCreate() {
+      this.dialogVisible = true
+      this.resetTemp()
+      this.dialogStatus = 'create'
     },
     createData() {
       addGroup(this.temp).then(() => {
@@ -160,10 +142,48 @@ export default {
         })
       })
     },
+    handleUpdate(row) {
+      this.activeName = 'first'
+      this.temp = Object.assign({}, row)
+      this.dialogVisible = true
+      this.dialogStatus = 'edit'
+      getL1Menu().then(response => {
+        this.menus = response
+        for (var i = 0; i < this.menus.length; i++) {
+          this.menus[i].id = 'l1' + this.menus[i].id
+        }
+      })
+      // 查询组的已有权限的二级菜单
+      getGroupL2menu({ groupname: this.temp.name }).then(response => {
+        this.groupL2menu = response
+      })
+      // 查询需要设置全局权限的 contenttype
+      getL2MenuContentType().then(response => {
+        this.l2wct_list = response
+        // 查询 contenttype 权限
+        getPermissionList().then(response => {
+          this.permission_list = response
+          for (var i = 0; i < this.l2wct_list.length; i++) {
+            this.contenttype_list[i] = {}
+            this.contenttype_list[i].id = this.l2wct_list[i].content_type.id
+            this.contenttype_list[i].title = this.l2wct_list[i].title
+            this.contenttype_list[i].perms = this.permission_list.filter(p => (p.content_type === this.l2wct_list[i].content_type.id))
+            for (var x = 0; x < this.contenttype_list[i].perms.length; x++) {
+              this.contenttype_list[i].perms[x].checked = false
+              for (var y = 0; y < row.permissions.length; y++) {
+                if (this.contenttype_list[i].perms[x].id === row.permissions[y].id) {
+                  this.contenttype_list[i].perms[x].checked = true
+                }
+              }
+            }
+            this.temp.permissions = row.permissions.map(mgp => { return mgp.id })
+          }
+        })
+      })
+    },
     updateData() {
       updateGroup(this.temp).then(() => {
         this.dialogVisible = false
-        // this.setObjectPerms()
         this.$notify({
           title: '成功',
           message: '更新成功',
@@ -173,13 +193,13 @@ export default {
         this.getList()
       })
     },
-    deleteData(id, index) {
-      this.$confirm('确认删除', '提示', {
+    deleteData(row, index) {
+      this.$confirm(`确认删除组: ${row.name} ?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteGroup(id).then(() => {
+        deleteGroup(row.id).then(() => {
           this.$notify({
             title: '成功',
             message: '删除成功！',
@@ -188,11 +208,6 @@ export default {
           })
           this.getList()
         })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
       })
     },
     resetTemp() {
@@ -200,15 +215,27 @@ export default {
         name: null,
         permissions: []
       }
-      this.permTemp.model = null
-      this.selectedObjects = []
-      this.selectedObjectsWithPerms = []
       this.activeName = 'first'
     },
-    checkChange(menu, isCheck) {
+    permName(codename) {
+      var permType = codename.split('_')[0]
+      if (permType === 'add') {
+        return '新增'
+      } else if (permType === 'view') {
+        return '查看'
+      } else if (permType === 'change') {
+        return '编辑'
+      } else if (permType === 'delete') {
+        return '删除'
+      } else {
+        return permType
+      }
+    },
+    menueCheckChange(menu, isCheck) {
       if (!menu.children) {
         if (isCheck) {
-          menu.perms = [104]
+          // 68 为 view_l2menu 的 ID
+          menu.perms = [68]
         } else {
           menu.perms = []
         }

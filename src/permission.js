@@ -29,6 +29,10 @@ router.beforeEach(async(to, from, next) => {
         if (store.getters.permission_add_routes.length === 0) {
           store.dispatch('permission/generateRoutes')
         }
+        // 已经登录且获取的权限为空，需要重新获取权限
+        if (store.getters.my_perms.length === 0) {
+          store.dispatch('permission/myPerms')
+        }
         next()
       } catch (error) {
         // remove token and go to login page to re-login

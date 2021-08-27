@@ -44,9 +44,10 @@ service.interceptors.response.use(
     if (error.response.status === 401) {
       store.dispatch('user/resetToken')
     } else if (error.response.status === 400) {
-      store.dispatch('user/logout')
+      // store.dispatch('user/logout')
       Message({
-        message: '用户名密码错误或 token 更新失败，请输入正确的用户名和密码，重新登录！',
+        // message: '用户名密码错误或 token 更新失败，请输入正确的用户名和密码，重新登录！',
+        message: error.response.data,
         type: 'error',
         duration: 10 * 1000
       })

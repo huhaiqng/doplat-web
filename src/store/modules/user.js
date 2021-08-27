@@ -1,6 +1,6 @@
-import { getUserInfo, getLoginUser } from '@/api/authperm/user'
+import { getUserInfo } from '@/api/authperm/user'
 import { login, refreshToken } from '@/api/authperm/login'
-import { getToken, getRefreshToken, setToken, setRefreshToken, setUserName, removeToken, removeRefreshToken, removeUserName, removeUserInfo, setIsSuperuser, setMyPerms } from '@/utils/auth'
+import { getToken, getRefreshToken, setToken, setRefreshToken, setUserName, removeToken, removeRefreshToken, removeUserName, removeUserInfo } from '@/utils/auth'
 // import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -38,16 +38,6 @@ const actions = {
         setToken(response.access_token)
         setRefreshToken(response.refresh_token)
         setUserName(username)
-        // 获取登录用户信息
-        getLoginUser().then(response => {
-          var my_perms = []
-          my_perms.push.apply(my_perms, response.user_permissions.map(x => { return x.codename }))
-          for (var i = 0; i < response.groups.length; i++) {
-            my_perms.push.apply(my_perms, response.groups[i].permissions.map(x => { return x.codename }))
-          }
-          setIsSuperuser(response.is_superuser)
-          setMyPerms(my_perms)
-        })
         resolve()
       }).catch(error => {
         reject(error)

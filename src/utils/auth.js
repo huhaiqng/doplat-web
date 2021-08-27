@@ -44,22 +44,6 @@ export function setUserInfo(userInfo) {
   return sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
 }
 
-export function setIsSuperuser(is_superuser) {
-  return sessionStorage.setItem('is_superuser', is_superuser)
-}
-
-export function getIsSuperuser() {
-  return sessionStorage.getItem('is_superuser')
-}
-
-export function setMyPerms(my_perms) {
-  return sessionStorage.setItem('my_perms', my_perms)
-}
-
-export function getMyPerms() {
-  return sessionStorage.getItem('my_perms')
-}
-
 export function getUserInfo() {
   return sessionStorage.getItem('userInfo')
 }
