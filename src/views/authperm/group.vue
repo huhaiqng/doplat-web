@@ -47,12 +47,18 @@
           <div class="tab-pane">
             <el-scrollbar>
               <div v-for="item in contenttype_list" :key="item.title" style="margin-left:30px;margin-right:30px">
-                <div>{{ item.title }}</div>
-                <el-checkbox-group v-model="temp.permissions">
-                  <el-checkbox v-for="perm in item.perms" :key="perm.id" :label="perm.id" style="margin-top:10px;margin-bottom:20px;">
-                    {{ permName(perm.codename) }}
-                  </el-checkbox>
-                </el-checkbox-group>
+                <el-row style="margin-top:10px;">
+                  <el-col :span='3'>
+                    <span>{{ item.title }}</span>
+                  </el-col>
+                  <el-col :span='12'>
+                    <el-checkbox-group v-model="temp.permissions">
+                      <el-checkbox v-for="perm in item.perms" :key="perm.id" :label="perm.id">
+                        {{ permName(perm.codename) }}
+                      </el-checkbox>
+                    </el-checkbox-group>
+                  </el-col>
+                </el-row>
               </div>
             </el-scrollbar>
           </div>
