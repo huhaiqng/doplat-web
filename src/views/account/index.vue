@@ -5,7 +5,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="getList">
         搜索
       </el-button>
-      <el-button type="primary" class="filter-item" icon="el-icon-edit" @click="handleCreate">
+      <el-button v-if="permStatus.add" type="primary" class="filter-item" icon="el-icon-edit" @click="handleCreate">
         新增
       </el-button>
     </div>
@@ -42,8 +42,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="150px">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="deleteData(row.id,$index)">删除</el-button>
+          <el-button v-if="permStatus.change" type="primary" size="mini" @click="handleUpdate(row)">编辑</el-button>
+          <el-button v-if="permStatus.delete" type="danger" size="mini" @click="deleteData(row.id,$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -124,8 +124,10 @@
 import Pagination from '@/components/Pagination'
 import { getAccounts, addAccount, updateAccount, deleteAccount } from '@/api/account'
 import { encrypt, decrypt } from '@/utils/aes'
+import store from '@/store'
+
 export default {
-  name: 'Software',
+  name: 'Account',
   components: { Pagination },
   data() {
     return {
@@ -152,24 +154,21 @@ export default {
       textMap: {
         create: '新增',
         edit: '编辑'
-      }
+      },
+      permStatus: {
+        add: false,
+        change: false,
+        delete: false
+      },
+      is_superuser: false,
+      my_perms: []
     }
   },
   created() {
     this.getList()
+    this.getPermStstus()
   },
   methods: {
-    handleCreate() {
-      this.dialogVisible = true
-      this.resetTemp()
-      this.dialogStatus = 'create'
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row)
-      this.temp.password = decrypt(this.temp.password)
-      this.dialogVisible = true
-      this.dialogStatus = 'edit'
-    },
     getList() {
       getAccounts(this.listQuery).then(response => {
         this.list = response.results
@@ -177,6 +176,29 @@ export default {
         setTimeout(() => {
         }, 1.5 * 1000)
       })
+    },
+    getPermStstus() {
+      this.is_superuser = store.getters.is_superuser
+      this.my_perms = store.getters.my_perms
+      if (this.is_superuser) {
+        this.permStatus.add = true
+        this.permStatus.change = true
+        this.permStatus.delete = true
+      }
+      if (this.my_perms.indexOf('add_account') > -1) {
+        this.permStatus.add = true
+      }
+      if (this.my_perms.indexOf('change_account') > -1) {
+        this.permStatus.change = true
+      }
+      if (this.my_perms.indexOf('delete_account') > -1) {
+        this.permStatus.delete = true
+      }
+    },
+    handleCreate() {
+      this.dialogVisible = true
+      this.resetTemp()
+      this.dialogStatus = 'create'
     },
     createData() {
       this.tempCopy = Object.assign({}, this.temp)
@@ -191,6 +213,12 @@ export default {
           duration: 2000
         })
       })
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row)
+      this.temp.password = decrypt(this.temp.password)
+      this.dialogVisible = true
+      this.dialogStatus = 'edit'
     },
     updateData() {
       this.tempCopy = Object.assign({}, this.temp)

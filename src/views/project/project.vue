@@ -144,7 +144,7 @@ import { getProjectList, addProject, updateProject, deleteProject } from '@/api/
 import { getHostsSimple } from '@/api/project/host'
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
-import { getIsSuperuser, getMyPerms } from '@/utils/auth'
+import store from '@/store'
 
 export default {
   name: 'Project',
@@ -203,9 +203,9 @@ export default {
       })
     },
     getPermStstus() {
-      this.is_superuser = getIsSuperuser()
-      this.my_perms = getMyPerms()
-      if (this.is_superuser === 'true') {
+      this.is_superuser = store.getters.is_superuser
+      this.my_perms = store.getters.my_perms
+      if (this.is_superuser) {
         this.permStatus.add = true
         this.permStatus.change = true
         this.permStatus.delete = true

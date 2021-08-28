@@ -162,8 +162,8 @@ import { getProjectName } from '@/api/project/project'
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
 import { encrypt, decrypt } from '@/utils/aes'
-import { getIsSuperuser, getMyPerms } from '@/utils/auth'
 import MiddlewareDrawer from '@/components/Drawer/middleware'
+import store from '@/store'
 
 export default {
   name: 'Middleware',
@@ -232,10 +232,10 @@ export default {
       })
     },
     getPermStstus() {
-      this.is_superuser = getIsSuperuser()
-      this.my_perms = getMyPerms()
+      this.is_superuser = store.getters.is_superuser
+      this.my_perms = store.getters.my_perms
       console.log(this.is_superuser)
-      if (this.is_superuser === 'true') {
+      if (this.is_superuser) {
         this.permStatus.add = true
         this.permStatus.change = true
         this.permStatus.delete = true

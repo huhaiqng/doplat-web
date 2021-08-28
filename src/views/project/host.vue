@@ -305,7 +305,7 @@ export default {
     getPermStstus() {
       this.is_superuser = store.getters.is_superuser
       this.my_perms = store.getters.my_perms
-      if (this.is_superuser === 'true') {
+      if (this.is_superuser) {
         this.permStatus.add = true
         this.permStatus.change = true
         this.permStatus.delete = true

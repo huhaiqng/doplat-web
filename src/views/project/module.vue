@@ -4,7 +4,7 @@
       <el-select v-model="queryList.project" placeholder="项目" filterable clearable class="filter-item" style="width: 400px" @change="getList">
         <el-option v-for="item in projectList" :key="item.name" :label="item.name" :value="item.id" />
       </el-select>
-      <el-button class="filter-item" icon="el-icon-edit" type="primary" @click="handleCreate">
+      <el-button v-if="permStatus.add" class="filter-item" icon="el-icon-edit" type="primary" @click="handleCreate">
         新增
       </el-button>
     </div>
@@ -54,8 +54,8 @@
           <el-dropdown type="primary">
             <el-button size="mini" split-buttion type="primary">操作<i class="el-icon-arrow-down el-icon--right" /></el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="handleUpdate(row)">编辑</el-dropdown-item>
-              <el-dropdown-item @click.native="handleDelete(row.id)">删除</el-dropdown-item>
+              <el-dropdown-item v-if="permStatus.change" @click.native="handleUpdate(row)">编辑</el-dropdown-item>
+              <el-dropdown-item v-if="permStatus.delete" @click.native="handleDelete(row.id)">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -128,6 +128,8 @@
 import { addProjectmodule, deleteProjectmodule, updateProjectmodule, getProjectmodule } from '@/api/project/module'
 import { getProjectName } from '@/api/project/project'
 import Pagination from '@/components/Pagination'
+import store from '@/store'
+
 export default {
   name: 'Projectmodule',
   components: { Pagination },
@@ -156,7 +158,14 @@ export default {
       textMap: {
         create: '新增',
         edit: '编辑'
-      }
+      },
+      permStatus: {
+        add: false,
+        change: false,
+        delete: false
+      },
+      is_superuser: false,
+      my_perms: []
     }
   },
   created() {
@@ -164,6 +173,7 @@ export default {
     getProjectName().then(response => {
       this.projectList = response
     })
+    this.getPermStstus()
   },
   methods: {
     getList() {
@@ -171,6 +181,24 @@ export default {
         this.list = response.results
         this.total = response.count
       })
+    },
+    getPermStstus() {
+      this.is_superuser = store.getters.is_superuser
+      this.my_perms = store.getters.my_perms
+      if (this.is_superuser) {
+        this.permStatus.add = true
+        this.permStatus.change = true
+        this.permStatus.delete = true
+      }
+      if (this.my_perms.indexOf('add_projectmodule') > -1) {
+        this.permStatus.add = true
+      }
+      if (this.my_perms.indexOf('change_projectmodule') > -1) {
+        this.permStatus.change = true
+      }
+      if (this.my_perms.indexOf('delete_projectmodule') > -1) {
+        this.permStatus.delete = true
+      }
     },
     restTemp() {
       this.temp = {

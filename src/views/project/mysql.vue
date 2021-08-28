@@ -226,10 +226,11 @@ export default {
     getPermStstus() {
       this.is_superuser = store.getters.is_superuser
       this.my_perms = store.getters.my_perms
-      if (this.is_superuser === 'true') {
+      if (this.is_superuser) {
         this.permStatus.add = true
         this.permStatus.change = true
         this.permStatus.delete = true
+        console.log(this.permStatus)
       }
       if (this.my_perms.indexOf('add_mysql') > -1) {
         this.permStatus.add = true
@@ -240,6 +241,7 @@ export default {
       if (this.my_perms.indexOf('delete_mysql') > -1) {
         this.permStatus.delete = true
       }
+      console.log(this.my_perms)
     },
     restTemp() {
       this.temp = {
