@@ -32,6 +32,12 @@ export function updateGroup(data) {
   })
 }
 
+export function getGroupName() {
+  return request({
+    url: '/api/group-name/',
+    method: 'get'
+  })
+}
 // 获取组的二级菜单权限
 export function getGroupL2menu(data) {
   return request({

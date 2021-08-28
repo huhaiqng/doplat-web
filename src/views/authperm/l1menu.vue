@@ -2,11 +2,11 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.title" placeholder="名称" style="width: 400px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button v-if="permStatus.add" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        添加
-      </el-button>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
+      </el-button>
+      <el-button v-if="permStatus.add" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+        添加
       </el-button>
     </div>
 

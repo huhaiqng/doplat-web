@@ -2,11 +2,11 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.title" placeholder="名称" style="width: 400px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button v-if="permStatus.add" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        添加
-      </el-button>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
+      </el-button>
+      <el-button v-if="permStatus.add" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+        添加
       </el-button>
     </div>
 
@@ -65,9 +65,7 @@
         </template>
       </el-table-column>
     </el-table>
-
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="100px" style="margin-right:30px; margin-left:30px;">
         <el-form-item label="一级菜单" prop="parent">
@@ -224,6 +222,7 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
+      this.temp.parent = this.temp.parent.id
       this.dialogStatus = 'update'
       this.dialogVisible = true
     },
