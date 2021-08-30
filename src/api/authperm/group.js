@@ -55,3 +55,27 @@ export function setGroupObjectPerms(data) {
     data
   })
 }
+
+// 组对象权限
+export function getGroupObjectPerm(data) {
+  return request({
+    url: '/api/groupobjectpermission/',
+    method: 'get',
+    params: data
+  })
+}
+
+export function addGroupObjectPerm(data) {
+  return request({
+    url: '/api/groupobjectpermission/',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteGroupObjectPerm(id) {
+  return request({
+    url: `/api/groupobjectpermission/${id}/`,
+    method: 'delete'
+  })
+}

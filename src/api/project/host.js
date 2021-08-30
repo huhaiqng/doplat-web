@@ -34,3 +34,11 @@ export function getHostsSimple() {
     method: 'get'
   })
 }
+// Host Perm
+export function getHostsPerm(query) {
+  return request({
+    url: '/api/host-perm/',
+    method: 'get',
+    params: query
+  })
+}

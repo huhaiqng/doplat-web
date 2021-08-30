@@ -1,8 +1,9 @@
 import request from '@/utils/request'
 
-export function getPermissionList() {
+export function getPermissionList(query) {
   return request({
     url: '/api/permission/',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
