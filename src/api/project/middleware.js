@@ -28,3 +28,11 @@ export function deleteMiddleware(id) {
     method: 'delete'
   })
 }
+// Middleware Perm
+export function getMiddlewarePerm(query) {
+  return request({
+    url: '/api/middleware-perm/',
+    method: 'get',
+    params: query
+  })
+}

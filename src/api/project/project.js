@@ -46,3 +46,11 @@ export function getProjectName() {
     method: 'get'
   })
 }
+// Project Perm
+export function getProjectPerm(query) {
+  return request({
+    url: '/api/project-perm/',
+    method: 'get',
+    params: query
+  })
+}

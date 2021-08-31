@@ -80,7 +80,7 @@
           <el-input v-model="temp.path" style="width:60%" />
         </el-form-item>
         <el-form-item label="模型" prop="content_type">
-          <el-select v-model="temp.content_type" class="filter-item" filterable style="width:40%">
+          <el-select v-model="temp.content_type" class="filter-item" filterable clearable style="width:40%">
             <el-option v-for="item in contenttype_list" :key="item.id" :label="item.model" :value="item.id" />
           </el-select>
         </el-form-item>

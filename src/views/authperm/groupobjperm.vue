@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="group" placeholder="组" clearable style="width: 300px" value-key="id" class="filter-item" @change="getObjectList">
+      <el-select v-model="group" placeholder="组" style="width: 300px" value-key="id" class="filter-item" @change="getObjectList">
         <el-option v-for="item in group_list" :key="item.id" :label="item.name" :value="item" />
       </el-select>
-      <el-select v-model="model" placeholder="模型" clearable style="width: 300px" value-key="id" class="filter-item" @change="getObjectList">
+      <el-select v-model="model" placeholder="模型" style="width: 300px" value-key="id" class="filter-item" @change="getObjectList">
         <el-option v-for="item in model_list" :key="item.content_type.id" :label="item.title" :value="item" />
       </el-select>
       <el-input v-model="listQuery.value" :placeholder="placeholder" style="width: 400px;" class="filter-item" @keyup.enter.native="getObjectList" />
@@ -12,21 +12,23 @@
         搜索
       </el-button>
     </div>
-    <div style="background-color: white;padding-top: 20px;padding-bottom: 20px;">
-      <div v-for="item in object_list" :key="item.id" style="margin-left:30px;margin-right:30px;background-color: white">
-        <el-row style="margin-top:10px;">
-          <el-col :span="3">
-            <span>{{ item.inside_ip }}</span>
-          </el-col>
-          <el-col :span="12">
-            <el-checkbox-group v-model="item.perms">
-              <el-checkbox v-for="perm in perm_list" :key="perm.codename" :label="perm.id" @change="checked=>updateObjectPerm(checked, item.id, item.perms_detail, perm.id)">
-                {{ permName(perm.codename) }}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-col>
-        </el-row>
-      </div>
+    <div style="background-color: white;padding-top:20px;padding-bottom:20px;padding-left:20px;">
+      <el-row v-for="(r, i) in row_num" :key="i" :gutter="20">
+        <el-col v-for="(o, j) in obj_num > (i+1)*num ? num : obj_num - i*num" :key="j" :span="12">
+          <el-row>
+            <el-col :span="8">
+              <el-checkbox-group v-model="object_list[num*i + j].perms" style="margin-bottom:10px;">
+                <el-checkbox v-for="perm in perm_list" :key="perm.codename" :label="perm.id" @change="checked=>updateObjectPerm(checked, object_list[num*i + j].id, object_list[num*i + j].perms_detail, perm.id)">
+                  {{ permName(perm.codename) }}
+                </el-checkbox>
+              </el-checkbox-group>
+            </el-col>
+            <el-col :span="16">
+              <span>{{ object_list[num*i + j].name }}</span>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
     </div>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getObjectList" />
   </div>
@@ -36,6 +38,9 @@ import Pagination from '@/components/Pagination'
 import { getGroupName } from '@/api/authperm/group'
 import { getL2MenuContentType } from '@/api/authperm/l2menu'
 import { getHostsPerm } from '@/api/project/host'
+import { getMySQLPerm } from '@/api/project/mysql'
+import { getProjectPerm } from '@/api/project/project'
+import { getMiddlewarePerm } from '@/api/project/middleware'
 import { getPermissionList } from '@/api/authperm/permission'
 import waves from '@/directive/waves'
 import { addGroupObjectPerm, deleteGroupObjectPerm } from '@/api/authperm/group'
@@ -54,13 +59,13 @@ export default {
       object_list: [],
       perm_list: [],
       total: 0,
-      obj_perm_list: [],
-      group_obj_perm_list: [],
-      obj_pk_list: [],
       placeholder: null,
+      row_num: 0,
+      obj_num: 0,
+      num: 2,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 40,
         value: ''
       },
       dialogVisible: false,
@@ -95,27 +100,97 @@ export default {
     },
     getObjectList() {
       if (this.model.content_type.model === 'host') {
-        this.placeholder = '主机内网 IP'
-        var tempQueryList = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
-        getHostsPerm(tempQueryList).then(response => {
+        this.placeholder = '内网 IP'
+        var hostQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        getHostsPerm(hostQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
-        })
-        getPermissionList({ content_type: this.model.id }).then(response => {
-          this.perm_list = response
+          this.obj_num = this.object_list.length
+          this.row_num = Math.ceil(this.obj_num / this.num)
         })
       }
+      if (this.model.content_type.model === 'mysql') {
+        this.placeholder = '内网地址'
+        var mysqlQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_addr: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        getMySQLPerm(mysqlQuery).then(response => {
+          this.total = response.count
+          this.object_list = response.results
+          this.obj_num = this.object_list.length
+          this.row_num = Math.ceil(this.obj_num / this.num)
+        })
+      }
+      if (this.model.content_type.model === 'middleware') {
+        this.placeholder = '连接地址'
+        var middlewareQuery = { page: this.listQuery.page, limit: this.listQuery.limit, conn_addr: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        getMiddlewarePerm(middlewareQuery).then(response => {
+          this.total = response.count
+          this.object_list = response.results
+          this.obj_num = this.object_list.length
+          this.row_num = Math.ceil(this.obj_num / this.num)
+        })
+      }
+      if (this.model.content_type.model === 'project') {
+        this.placeholder = '名称'
+        var projectQuery = { page: this.listQuery.page, limit: this.listQuery.limit, name: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        getProjectPerm(projectQuery).then(response => {
+          this.total = response.count
+          this.object_list = response.results
+          this.obj_num = this.object_list.length
+          this.row_num = Math.ceil(this.obj_num / this.num)
+        })
+      }
+      if (this.model.content_type.model === 'projectmodule') {
+        this.placeholder = '项目名'
+        var projectmoduleQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        getHostsPerm(projectmoduleQuery).then(response => {
+          this.total = response.count
+          this.object_list = response.results
+          this.obj_num = this.object_list.length
+          this.row_num = Math.ceil(this.obj_num / this.num)
+        })
+      }
+      if (this.model.content_type.model === 'url') {
+        this.placeholder = '项目名'
+        var urlQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        getHostsPerm(urlQuery).then(response => {
+          this.total = response.count
+          this.object_list = response.results
+          this.obj_num = this.object_list.length
+          this.row_num = Math.ceil(this.obj_num / this.num)
+        })
+      }
+      if (this.model.content_type.model === 'config') {
+        this.placeholder = '项目名'
+        var configQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        getHostsPerm(configQuery).then(response => {
+          this.total = response.count
+          this.object_list = response.results
+          this.obj_num = this.object_list.length
+          this.row_num = Math.ceil(this.obj_num / this.num)
+        })
+      }
+      if (this.model.content_type.model === 'account') {
+        this.placeholder = '名称'
+        var accountQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        getHostsPerm(accountQuery).then(response => {
+          this.total = response.count
+          this.object_list = response.results
+          this.obj_num = this.object_list.length
+          this.row_num = Math.ceil(this.obj_num / this.num)
+        })
+      }
+      getPermissionList({ content_type: this.model.id }).then(response => {
+        this.perm_list = response.filter(p => p.codename.indexOf('add_') === -1)
+      })
     },
     updateObjectPerm(checked, object_pk, perms_detail, permission) {
-      var object_perm_temp = { group: this.group.id, content_type: this.model.id, permission: permission, object_pk: object_pk.toString() }
+      var object_perm_temp = { group: this.group.id, content_type: this.model.id, permission: permission, object_pk: object_pk }
       if (checked) {
         addGroupObjectPerm(object_perm_temp).then(() => {
           this.getObjectList()
         })
       } else {
-        console.log(perms_detail)
         var group_perm_id = perms_detail.filter(gop => (gop.object_pk === object_pk.toString() && gop.permission === permission && gop.group === this.group.id)).map(rm => { return rm.id })
-        console.log(group_perm_id)
         deleteGroupObjectPerm(group_perm_id).then(() => {
           this.getObjectList()
         })
