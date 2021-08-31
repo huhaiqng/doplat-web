@@ -101,7 +101,13 @@ export default {
     getObjectList() {
       if (this.model.content_type.model === 'host') {
         this.placeholder = '内网 IP'
-        var hostQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        var hostQuery = {
+          page: this.listQuery.page,
+          limit: this.listQuery.limit,
+          inside_ip: this.listQuery.value,
+          group: this.group.id,
+          content_type: this.model.id
+        }
         getHostsPerm(hostQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
@@ -111,7 +117,13 @@ export default {
       }
       if (this.model.content_type.model === 'mysql') {
         this.placeholder = '内网地址'
-        var mysqlQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_addr: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        var mysqlQuery = {
+          page: this.listQuery.page,
+          limit: this.listQuery.limit,
+          inside_addr: this.listQuery.value,
+          group: this.group.id,
+          content_type: this.model.content_type.id
+        }
         getMySQLPerm(mysqlQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
@@ -121,7 +133,13 @@ export default {
       }
       if (this.model.content_type.model === 'middleware') {
         this.placeholder = '连接地址'
-        var middlewareQuery = { page: this.listQuery.page, limit: this.listQuery.limit, conn_addr: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        var middlewareQuery = {
+          page: this.listQuery.page,
+          limit: this.listQuery.limit,
+          conn_addr: this.listQuery.value,
+          group: this.group.id,
+          content_type: this.model.content_type.id
+        }
         getMiddlewarePerm(middlewareQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
@@ -131,7 +149,14 @@ export default {
       }
       if (this.model.content_type.model === 'project') {
         this.placeholder = '名称'
-        var projectQuery = { page: this.listQuery.page, limit: this.listQuery.limit, name: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        var projectQuery = {
+          page: this.listQuery.page,
+          limit: this.listQuery.limit,
+          name: this.listQuery.value,
+          group: this.group.id,
+          content_type: this.model.content_type.id
+        }
+        console.log(projectQuery)
         getProjectPerm(projectQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
@@ -141,7 +166,13 @@ export default {
       }
       if (this.model.content_type.model === 'projectmodule') {
         this.placeholder = '项目名'
-        var projectmoduleQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        var projectmoduleQuery = {
+          page: this.listQuery.page,
+          limit: this.listQuery.limit,
+          name: this.listQuery.value,
+          group: this.group.id,
+          content_type: this.model.content_type.id
+        }
         getHostsPerm(projectmoduleQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
@@ -151,7 +182,13 @@ export default {
       }
       if (this.model.content_type.model === 'url') {
         this.placeholder = '项目名'
-        var urlQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        var urlQuery = {
+          page: this.listQuery.page,
+          limit: this.listQuery.limit,
+          name: this.listQuery.value,
+          group: this.group.id,
+          content_type: this.model.content_type.id
+        }
         getHostsPerm(urlQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
@@ -161,7 +198,13 @@ export default {
       }
       if (this.model.content_type.model === 'config') {
         this.placeholder = '项目名'
-        var configQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        var configQuery = {
+          page: this.listQuery.page,
+          limit: this.listQuery.limit,
+          name: this.listQuery.value,
+          group: this.group.id,
+          content_type: this.model.content_type.id
+        }
         getHostsPerm(configQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
@@ -171,7 +214,13 @@ export default {
       }
       if (this.model.content_type.model === 'account') {
         this.placeholder = '名称'
-        var accountQuery = { page: this.listQuery.page, limit: this.listQuery.limit, inside_ip: this.listQuery.value, group: this.group.id, content_type: this.model.id }
+        var accountQuery = {
+          page: this.listQuery.page,
+          limit: this.listQuery.limit,
+          name: this.listQuery.value,
+          group: this.group.id,
+          content_type: this.model.content_type.id
+        }
         getHostsPerm(accountQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
@@ -179,12 +228,13 @@ export default {
           this.row_num = Math.ceil(this.obj_num / this.num)
         })
       }
-      getPermissionList({ content_type: this.model.id }).then(response => {
+
+      getPermissionList({ content_type: this.model.content_type.id }).then(response => {
         this.perm_list = response.filter(p => p.codename.indexOf('add_') === -1)
       })
     },
     updateObjectPerm(checked, object_pk, perms_detail, permission) {
-      var object_perm_temp = { group: this.group.id, content_type: this.model.id, permission: permission, object_pk: object_pk }
+      var object_perm_temp = { group: this.group.id, content_type: this.model.content_type.id, permission: permission, object_pk: object_pk }
       if (checked) {
         addGroupObjectPerm(object_perm_temp).then(() => {
           this.getObjectList()
