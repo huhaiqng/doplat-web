@@ -47,15 +47,6 @@ export function getGroupL2menu(data) {
   })
 }
 
-// 设置组的权限
-export function setGroupObjectPerms(data) {
-  return request({
-    url: '/api/setGroupObjectPerms/',
-    method: 'post',
-    data
-  })
-}
-
 // 组对象权限
 export function getGroupObjectPerm(data) {
   return request({
