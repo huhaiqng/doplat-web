@@ -8,6 +8,13 @@ export function getUrl(query) {
     params: query
   })
 }
+export function getUrlPerm(query) {
+  return request({
+    url: '/api/url-perm/',
+    method: 'get',
+    params: query
+  })
+}
 export function addUrl(data) {
   return request({
     url: '/api/url/',

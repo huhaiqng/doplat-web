@@ -210,13 +210,13 @@ export default {
         this.permStatus.change = true
         this.permStatus.delete = true
       }
-      if (this.my_perms.indexOf('add_host') > -1) {
+      if (this.my_perms.indexOf('add_project') > -1) {
         this.permStatus.add = true
       }
-      if (this.my_perms.indexOf('change_host') > -1) {
+      if (this.my_perms.indexOf('change_project') > -1) {
         this.permStatus.change = true
       }
-      if (this.my_perms.indexOf('delete_host') > -1) {
+      if (this.my_perms.indexOf('delete_project') > -1) {
         this.permStatus.delete = true
       }
     },

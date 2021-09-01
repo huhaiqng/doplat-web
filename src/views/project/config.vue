@@ -80,7 +80,7 @@
 <script>
 import { addConfig, deleteConfig, updateConfig, getConfig } from '@/api/project/config'
 import { getEnv } from '@/api/project/env'
-import { getProjectName } from '@/api/project/project'
+import { getProjectNameNeedPerm } from '@/api/project/project'
 import Pagination from '@/components/Pagination'
 import Tinymce from '@/components/Tinymce'
 import store from '@/store'
@@ -128,7 +128,7 @@ export default {
     getEnv().then(response => {
       this.envList = response
     })
-    getProjectName().then(response => {
+    getProjectNameNeedPerm().then(response => {
       this.projectList = response
     })
     this.getPermStstus()

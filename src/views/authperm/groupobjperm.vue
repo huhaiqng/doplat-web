@@ -42,6 +42,8 @@ import { getMySQLPerm } from '@/api/project/mysql'
 import { getProjectPerm } from '@/api/project/project'
 import { getMiddlewarePerm } from '@/api/project/middleware'
 import { getPermissionList } from '@/api/authperm/permission'
+import { getProjectmodulePerm } from '@/api/project/module'
+import { getUrlPerm } from '@/api/project/url'
 import waves from '@/directive/waves'
 import { addGroupObjectPerm, deleteGroupObjectPerm } from '@/api/authperm/group'
 
@@ -156,7 +158,6 @@ export default {
           group: this.group.id,
           content_type: this.model.content_type.id
         }
-        console.log(projectQuery)
         getProjectPerm(projectQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
@@ -173,7 +174,7 @@ export default {
           group: this.group.id,
           content_type: this.model.content_type.id
         }
-        getHostsPerm(projectmoduleQuery).then(response => {
+        getProjectmodulePerm(projectmoduleQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
           this.obj_num = this.object_list.length
@@ -189,7 +190,7 @@ export default {
           group: this.group.id,
           content_type: this.model.content_type.id
         }
-        getHostsPerm(urlQuery).then(response => {
+        getUrlPerm(urlQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
           this.obj_num = this.object_list.length

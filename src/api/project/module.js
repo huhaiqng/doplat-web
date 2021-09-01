@@ -8,6 +8,13 @@ export function getProjectmodule(query) {
     params: query
   })
 }
+export function getProjectmodulePerm(query) {
+  return request({
+    url: '/api/projectmodule-perm/',
+    method: 'get',
+    params: query
+  })
+}
 export function addProjectmodule(data) {
   return request({
     url: '/api/projectmodule/',
