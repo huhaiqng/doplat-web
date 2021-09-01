@@ -36,22 +36,15 @@
         </el-form-item>
       </el-form>
       <el-tabs v-show="dialogStatus === 'edit'" v-model="activeName" tab-position="top" type="border-card">
-        <el-tab-pane label="设置菜单权限" name="first">
+        <el-tab-pane label="设置全局权限" name="first">
           <div class="tab-pane">
             <el-scrollbar>
-              <el-tree ref="tree" :data="menus" show-checkbox node-key="id" default-expand-all :props="defaultProps" :default-checked-keys="groupL2menu" @check-change="menueCheckChange" />
-            </el-scrollbar>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="设置全局权限" name="second">
-          <div class="tab-pane">
-            <el-scrollbar>
-              <div v-for="item in contenttype_list" :key="item.title" style="margin-left:30px;margin-right:30px">
+              <div v-for="item in l2wct_list" :key="item.title" style="margin-left:30px;margin-right:30px">
                 <el-row style="margin-top:10px;">
-                  <el-col :span="3">
-                    <span>{{ item.title }}</span>
+                  <el-col :span="6">
+                    <span>{{ item.title }} - {{ item.content_type.model }}</span>
                   </el-col>
-                  <el-col :span="21">
+                  <el-col :span="18">
                     <el-checkbox-group v-model="temp.permissions">
                       <el-checkbox v-for="perm in item.perms" :key="perm.id" :label="perm.id">
                         {{ permName(perm.codename) }}
@@ -77,10 +70,8 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination'
-import { getGroup, addGroup, updateGroup, deleteGroup, getGroupL2menu, setGroupObjectPerms } from '@/api/authperm/group'
-import { getL1Menu } from '@/api/authperm/l1menu'
+import { getGroup, addGroup, updateGroup, deleteGroup } from '@/api/authperm/group'
 import { getL2MenuContentType } from '@/api/authperm/l2menu'
-import { getPermissionList } from '@/api/authperm/permission'
 
 export default {
   name: 'Group',
@@ -98,15 +89,6 @@ export default {
         page: 1,
         limit: 10
       },
-      // 一级菜单，包含了二级子菜单
-      menus: [],
-      // 组有权限的二级菜单
-      groupL2menu: [],
-      defaultProps: {
-        children: 'children',
-        label: 'title'
-      },
-      modelMenu: [],
       dialogVisible: false,
       dialogStatus: null,
       textMap: {
@@ -114,9 +96,6 @@ export default {
         edit: '编辑'
       },
       activeName: 'first',
-      permission_list: [],
-      contenttype_list: [],
-      // 有 conttenttype 的二级菜单
       l2wct_list: []
     }
   },
@@ -139,7 +118,6 @@ export default {
       addGroup(this.temp).then(() => {
         this.dialogVisible = false
         this.getList()
-        // this.setObjectPerms()
         this.$notify({
           title: '成功',
           message: '用户组新增成功！',
@@ -153,38 +131,8 @@ export default {
       this.temp = Object.assign({}, row)
       this.dialogVisible = true
       this.dialogStatus = 'edit'
-      getL1Menu().then(response => {
-        this.menus = response
-        for (var i = 0; i < this.menus.length; i++) {
-          this.menus[i].id = 'l1' + this.menus[i].id
-        }
-      })
-      // 查询组的已有权限的二级菜单
-      getGroupL2menu({ groupname: this.temp.name }).then(response => {
-        this.groupL2menu = response
-      })
-      // 查询需要设置全局权限的 contenttype
       getL2MenuContentType().then(response => {
         this.l2wct_list = response
-        // 查询 contenttype 权限
-        getPermissionList().then(response => {
-          this.permission_list = response
-          for (var i = 0; i < this.l2wct_list.length; i++) {
-            this.contenttype_list[i] = {}
-            this.contenttype_list[i].id = this.l2wct_list[i].content_type.id
-            this.contenttype_list[i].title = this.l2wct_list[i].title
-            this.contenttype_list[i].perms = this.permission_list.filter(p => (p.content_type === this.l2wct_list[i].content_type.id))
-            for (var x = 0; x < this.contenttype_list[i].perms.length; x++) {
-              this.contenttype_list[i].perms[x].checked = false
-              for (var y = 0; y < row.permissions.length; y++) {
-                if (this.contenttype_list[i].perms[x].id === row.permissions[y].id) {
-                  this.contenttype_list[i].perms[x].checked = true
-                }
-              }
-            }
-            this.temp.permissions = row.permissions.map(mgp => { return mgp.id })
-          }
-        })
       })
     },
     updateData() {
@@ -235,21 +183,6 @@ export default {
         return '删除'
       } else {
         return permType
-      }
-    },
-    menueCheckChange(menu, isCheck) {
-      if (!menu.children) {
-        if (isCheck) {
-          // 68 为 view_l2menu 的 ID
-          menu.perms = [68]
-        } else {
-          menu.perms = []
-        }
-        // 更新菜单权限
-        var checkedL2Menus = []
-        checkedL2Menus.push(menu)
-        var menuData = { groupname: this.temp.name, model: 'l2menu', objects: checkedL2Menus }
-        setGroupObjectPerms(menuData)
       }
     }
   }

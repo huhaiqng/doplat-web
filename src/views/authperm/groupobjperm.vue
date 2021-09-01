@@ -42,6 +42,7 @@ import { getMySQLPerm } from '@/api/project/mysql'
 import { getProjectPerm } from '@/api/project/project'
 import { getMiddlewarePerm } from '@/api/project/middleware'
 import { getPermissionList } from '@/api/authperm/permission'
+import { getL2MenuListPerm } from '@/api/authperm/l2menu'
 import { getProjectmodulePerm } from '@/api/project/module'
 import { getConfigPerm } from '@/api/project/config'
 import { getAccountsPerm } from '@/api/account'
@@ -231,7 +232,22 @@ export default {
           this.row_num = Math.ceil(this.obj_num / this.num)
         })
       }
-
+      if (this.model.content_type.model === 'l2menu') {
+        this.placeholder = '名称'
+        var l2menutQuery = {
+          page: this.listQuery.page,
+          limit: this.listQuery.limit,
+          title: this.listQuery.value,
+          group: this.group.id,
+          content_type: this.model.content_type.id
+        }
+        getL2MenuListPerm(l2menutQuery).then(response => {
+          this.total = response.count
+          this.object_list = response.results
+          this.obj_num = this.object_list.length
+          this.row_num = Math.ceil(this.obj_num / this.num)
+        })
+      }
       getPermissionList({ content_type: this.model.content_type.id }).then(response => {
         this.perm_list = response.filter(p => p.codename.indexOf('add_') === -1)
       })
