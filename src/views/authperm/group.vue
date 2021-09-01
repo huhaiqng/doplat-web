@@ -36,7 +36,7 @@
         </el-form-item>
       </el-form>
       <el-tabs v-show="dialogStatus === 'edit'" v-model="activeName" tab-position="top" type="border-card">
-        <el-tab-pane label="设置全局权限" name="first">
+        <el-tab-pane label="全局权限" name="first">
           <div class="tab-pane">
             <el-scrollbar>
               <div v-for="item in l2wct_list" :key="item.title" style="margin-left:30px;margin-right:30px">
