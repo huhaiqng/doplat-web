@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button type="primary" class="filter-item" icon="el-icon-edit" @click="handleCreate">
+      <el-button type="primary" size="medium" class="filter-item" icon="el-icon-edit" @click="handleCreate">
         新增
       </el-button>
     </div>
@@ -58,10 +58,10 @@
         </el-tab-pane>
       </el-tabs>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">
+        <el-button size="medium" @click="dialogVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus === 'create'?createData():updateData()">
+        <el-button size="medium" type="primary" @click="dialogStatus === 'create'?createData():updateData()">
           确定
         </el-button>
       </div>

@@ -8,7 +8,7 @@
         <el-option v-for="item in model_list" :key="item.content_type.id" :label="item.title" :value="item" />
       </el-select>
       <el-input v-model="listQuery.value" :placeholder="placeholder" style="width: 400px;" class="filter-item" @keyup.enter.native="getObjectList" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getObjectList">
+      <el-button v-waves class="filter-item" type="primary" size="medium" icon="el-icon-search" @click="getObjectList">
         搜索
       </el-button>
     </div>

@@ -4,7 +4,7 @@
       <el-select v-model="queryList.project" placeholder="项目" filterable clearable class="filter-item" style="width: 400px" @change="getList">
         <el-option v-for="item in projectList" :key="item.name" :label="item.name" :value="item.id" />
       </el-select>
-      <el-button v-if="permStatus.add" class="filter-item" icon="el-icon-edit" type="primary" @click="handleCreate">
+      <el-button v-if="permStatus.add" size="medium" class="filter-item" icon="el-icon-edit" type="primary" @click="handleCreate">
         新增
       </el-button>
     </div>
@@ -77,10 +77,10 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">
+        <el-button size="medium" @click="dialogVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button size="medium" type="primary" @click="dialogStatus==='create'?createData():updateData()">
           保存
         </el-button>
       </div>

@@ -34,8 +34,8 @@
           <el-dropdown type="primary">
             <el-button size="mini" split-buttion type="primary">操作<i class="el-icon-arrow-down el-icon--right" /></el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-if="permStatus.change" @click.native="handleUpdate(row)">编辑</el-dropdown-item>
-              <el-dropdown-item v-if="permStatus.delete" @click.native="handleDelete(row.id)">删除</el-dropdown-item>
+              <el-dropdown-item v-if="permStatus.change" size="medium" @click.native="handleUpdate(row)">编辑</el-dropdown-item>
+              <el-dropdown-item v-if="permStatus.delete" size="medium" @click.native="handleDelete(row.id)">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -59,10 +59,10 @@
         <tinymce ref="tinymce" v-model="temp.conf" :height="300" />
       </el-row>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">
+        <el-button size="medium" @click="dialogVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button size="medium" type="primary" @click="dialogStatus==='create'?createData():updateData()">
           保存
         </el-button>
       </div>

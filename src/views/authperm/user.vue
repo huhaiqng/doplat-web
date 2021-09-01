@@ -4,7 +4,7 @@
       <el-select v-model="listQuery.groups" placeholder="选择组" clearable style="width: 300px" class="filter-item" @change="getList">
         <el-option v-for="item in groupList" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
-      <el-button type="primary" class="filter-item" icon="el-icon-edit" @click="handleCreate">
+      <el-button type="primary" class="filter-item" size="medium" icon="el-icon-edit" @click="handleCreate">
         新增
       </el-button>
     </div>
@@ -85,10 +85,10 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="handelCancel('temp')">
+        <el-button size="medium" @click="handelCancel('temp')">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus === 'create'?createData('temp'):updateData('temp')">
+        <el-button size="medium" type="primary" @click="dialogStatus === 'create'?createData('temp'):updateData('temp')">
           确定
         </el-button>
       </div>

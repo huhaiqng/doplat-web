@@ -8,10 +8,10 @@
       <el-select v-model="listQuery.env" placeholder="环境" clearable class="filter-item" style="width: 200px">
         <el-option v-for="item in env_list" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button v-waves class="filter-item" size="medium" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      <el-button v-if="permStatus.add" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button v-if="permStatus.add" class="filter-item" size="medium" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
     </div>
@@ -141,10 +141,10 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">
+        <el-button size="medium" @click="dialogVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button size="medium" type="primary" @click="dialogStatus==='create'?createData():updateData()">
           保存
         </el-button>
       </div>
