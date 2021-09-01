@@ -14,6 +14,9 @@
       <el-button v-if="permStatus.add" class="filter-item" style="margin-left: 10px;" type="primary" size="medium" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
+      <el-button v-if="permStatus.delete" class="filter-item" style="margin-left: 10px;" type="primary" size="medium" icon="el-icon-delete" @click="deleteMangHost">
+        删除
+      </el-button>
     </div>
 
     <el-table
@@ -23,12 +26,14 @@
       fit
       highlight-current-row
       style="width: 100%;"
+      @selection-change="choseHost"
     >
-      <el-table-column label="序号" align="center" width="60px">
-        <template slot-scope="{$index}">
-          <span>{{ $index + 1 + (listQuery.page - 1)*listQuery.limit }}</span>
+      <!-- <el-table-column align="center" width="40px">
+        <template slot-scope="{row}">
+          <el-checkbox :key="row.id" @change="checked=>choseHost(checked, row)" />
         </template>
-      </el-table-column>
+      </el-table-column> -->
+      <el-table-column type="selection" align="center" width="55" />
       <el-table-column label="主机名">
         <template slot-scope="{row}">
           <span class="link-type" @click="showDetail(row)">{{ row.hostname }}</span>
@@ -77,12 +82,12 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="100px" class-name="small-padding fixed-width">
-        <template slot-scope="{row, $index}">
+        <template slot-scope="{row}">
           <el-dropdown type="primary">
             <el-button size="mini" split-buttion type="primary">操作<i class="el-icon-arrow-down el-icon--right" /></el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item v-if="permStatus.change" @click.native="handleUpdate(row)">编辑</el-dropdown-item>
-              <el-dropdown-item v-if="permStatus.delete" @click.native="handleDelete(row.id, $index)">删除</el-dropdown-item>
+              <el-dropdown-item v-if="permStatus.delete" @click.native="handleDelete(row)">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -248,6 +253,7 @@ export default {
       adminOptions: ['root', 'administrator'],
       envOptions: undefined,
       dialogUploadVisible: false,
+      chosedHost: [],
       temp: {
         name: undefined,
         hostname: undefined,
@@ -405,13 +411,13 @@ export default {
         }
       })
     },
-    handleDelete(id, index) {
-      this.$confirm('确认删除', '提示', {
+    handleDelete(host) {
+      this.$confirm(`确认删除主机 ${host.hostname} ?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteHost(id).then(() => {
+        deleteHost(host.id).then(() => {
           this.$notify({
             title: '成功',
             message: '删除成功！',
@@ -441,6 +447,35 @@ export default {
       this.temp = Object.assign({}, row)
       this.temp.password = decrypt(this.temp.password)
       this.drawerVisible = true
+    },
+    choseHost(hosts) {
+      this.chosedHost = hosts
+    },
+    deleteMangHost() {
+      var delete_host_name = this.chosedHost.map(dh => { return dh.hostname })
+      this.$confirm(`确认删除主机 ${delete_host_name} ?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        for (var i = 0; i < this.chosedHost.length; i++) {
+          deleteHost(this.chosedHost[i].id).then(() => {
+            this.$notify({
+              title: '成功',
+              message: '删除成功！',
+              type: 'success',
+              duration: 2000
+            })
+            this.getList()
+          })
+        }
+        this.chosedHost = []
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }
