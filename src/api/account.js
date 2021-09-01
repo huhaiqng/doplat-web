@@ -7,6 +7,13 @@ export function getAccounts(query) {
     params: query
   })
 }
+export function getAccountsPerm(query) {
+  return request({
+    url: '/api/accounts-perm/',
+    method: 'get',
+    params: query
+  })
+}
 export function addAccount(data) {
   return request({
     url: '/api/accounts/',

@@ -8,6 +8,13 @@ export function getConfig(query) {
     params: query
   })
 }
+export function getConfigPerm(query) {
+  return request({
+    url: '/api/config-perm/',
+    method: 'get',
+    params: query
+  })
+}
 export function addConfig(data) {
   return request({
     url: '/api/config/',

@@ -43,6 +43,8 @@ import { getProjectPerm } from '@/api/project/project'
 import { getMiddlewarePerm } from '@/api/project/middleware'
 import { getPermissionList } from '@/api/authperm/permission'
 import { getProjectmodulePerm } from '@/api/project/module'
+import { getConfigPerm } from '@/api/project/config'
+import { getAccountsPerm } from '@/api/account'
 import { getUrlPerm } from '@/api/project/url'
 import waves from '@/directive/waves'
 import { addGroupObjectPerm, deleteGroupObjectPerm } from '@/api/authperm/group'
@@ -206,7 +208,7 @@ export default {
           group: this.group.id,
           content_type: this.model.content_type.id
         }
-        getHostsPerm(configQuery).then(response => {
+        getConfigPerm(configQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
           this.obj_num = this.object_list.length
@@ -222,7 +224,7 @@ export default {
           group: this.group.id,
           content_type: this.model.content_type.id
         }
-        getHostsPerm(accountQuery).then(response => {
+        getAccountsPerm(accountQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
           this.obj_num = this.object_list.length
