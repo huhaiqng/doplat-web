@@ -38,35 +38,3 @@ export function getGroupName() {
     method: 'get'
   })
 }
-// 获取组的二级菜单权限
-export function getGroupL2menu(data) {
-  return request({
-    url: '/api/getGroupL2menu/',
-    method: 'get',
-    params: data
-  })
-}
-
-// 组对象权限
-export function getGroupObjectPerm(data) {
-  return request({
-    url: '/api/groupobjectpermission/',
-    method: 'get',
-    params: data
-  })
-}
-
-export function addGroupObjectPerm(data) {
-  return request({
-    url: '/api/groupobjectpermission/',
-    method: 'post',
-    data
-  })
-}
-
-export function deleteGroupObjectPerm(id) {
-  return request({
-    url: `/api/groupobjectpermission/${id}/`,
-    method: 'delete'
-  })
-}
