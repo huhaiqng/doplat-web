@@ -7,14 +7,6 @@ export function getLoginUser() {
   })
 }
 
-export function getUserInfo(data) {
-  return request({
-    url: '/api/user/',
-    method: 'get',
-    params: data
-  })
-}
-
 export function getUserHostedInfo() {
   return request({
     url: '/api/getUserHostedInfo/',
@@ -25,7 +17,7 @@ export function getUserHostedInfo() {
 // User API
 export function getUser(data) {
   return request({
-    url: '/api/getUserInfo/',
+    url: '/api/userinfo/',
     method: 'get',
     params: data
   })
@@ -33,7 +25,7 @@ export function getUser(data) {
 
 export function addUser(data) {
   return request({
-    url: '/api/userInfo/',
+    url: '/api/userinfo/',
     method: 'post',
     data
   })
@@ -41,14 +33,14 @@ export function addUser(data) {
 
 export function deleteUser(id) {
   return request({
-    url: `/api/userInfo/${id}/`,
+    url: `/api/userinfo/${id}/`,
     method: 'delete'
   })
 }
 
 export function updateUser(data) {
   return request({
-    url: `/api/userInfo/${data.id}/`,
+    url: `/api/userinfo/${data.id}/`,
     method: 'put',
     data
   })

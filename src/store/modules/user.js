@@ -1,4 +1,3 @@
-import { getUserInfo } from '@/api/authperm/user'
 import { login, refreshToken } from '@/api/authperm/login'
 import { getToken, getRefreshToken, setToken, setRefreshToken, setUserName, removeToken, removeRefreshToken, removeUserName, removeUserInfo } from '@/utils/auth'
 // import { resetRouter } from '@/router'
@@ -41,20 +40,6 @@ const actions = {
         resolve()
       }).catch(error => {
         reject(error)
-      })
-    })
-  },
-
-  // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getUserInfo().then(response => {
-        const userInfo = response
-        if (!userInfo) {
-          reject('无法获取用户信息！')
-        }
-        commit('SET_USERINFO', userInfo)
-        resolve(userInfo)
       })
     })
   },

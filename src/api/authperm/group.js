@@ -38,3 +38,18 @@ export function getGroupName() {
     method: 'get'
   })
 }
+
+export function addGroupObjectPerm(data) {
+  return request({
+    url: '/api/groupobjectpermission/',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteGroupObjectPerm(id) {
+  return request({
+    url: `/api/groupobjectpermission/${id}/`,
+    method: 'delete'
+  })
+}
