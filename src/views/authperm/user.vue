@@ -98,7 +98,7 @@
 <script>
 import Pagination from '@/components/Pagination'
 import { getUser, addUser, updateUser, deleteUser } from '@/api/authperm/user'
-import { getGroup } from '@/api/authperm/group'
+import { getGroupName } from '@/api/authperm/group'
 import { validPassword } from '@/utils/validate'
 export default {
   name: 'Software',
@@ -173,7 +173,7 @@ export default {
       })
     },
     getGroupList() {
-      getGroup(this.groupListQuery).then(response => {
+      getGroupName(this.groupListQuery).then(response => {
         this.groupList = response
       })
     },

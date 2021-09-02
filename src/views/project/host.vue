@@ -28,11 +28,6 @@
       style="width: 100%;"
       @selection-change="choseHost"
     >
-      <!-- <el-table-column align="center" width="40px">
-        <template slot-scope="{row}">
-          <el-checkbox :key="row.id" @change="checked=>choseHost(checked, row)" />
-        </template>
-      </el-table-column> -->
       <el-table-column type="selection" align="center" width="55" />
       <el-table-column label="主机名">
         <template slot-scope="{row}">

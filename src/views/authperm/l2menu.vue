@@ -160,7 +160,7 @@ export default {
         this.list = response.results
         this.total = response.count
       })
-      getL1Menu().then(response => {
+      getL1Menu({ paged: false }).then(response => {
         this.l1menu_list = response
       })
       getContentType().then(response => {
