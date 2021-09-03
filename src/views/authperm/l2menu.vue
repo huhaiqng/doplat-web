@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { getL2MenuList, addL2Menu, updateL2Menu, deleteL2Menu } from '@/api/authperm/l2menu'
+import { getL2Menu, addL2Menu, updateL2Menu, deleteL2Menu } from '@/api/authperm/l2menu'
 import { getL1Menu } from '@/api/authperm/l1menu'
 import { getContentType } from '@/api/authperm/contenttype'
 import Pagination from '@/components/Pagination'
@@ -156,7 +156,7 @@ export default {
   },
   methods: {
     getList() {
-      getL2MenuList(this.listQuery).then(response => {
+      getL2Menu(this.listQuery).then(response => {
         this.list = response.results
         this.total = response.count
       })
