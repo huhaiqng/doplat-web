@@ -14,13 +14,6 @@ export function getL2MenuList(data) {
     params: data
   })
 }
-export function getL2MenuListPerm(data) {
-  return request({
-    url: '/api/l2menu-perm/',
-    method: 'get',
-    params: data
-  })
-}
 export function addL2Menu(data) {
   return request({
     url: '/api/l2menu/',

@@ -42,7 +42,7 @@ import { getMySQLPerm } from '@/api/project/mysql'
 import { getProjectPerm } from '@/api/project/project'
 import { getMiddlewarePerm } from '@/api/project/middleware'
 import { getPermissionList } from '@/api/authperm/permission'
-import { getL2MenuListPerm } from '@/api/authperm/l2menu'
+import { getL2Menu } from '@/api/authperm/l2menu'
 import { getProjectmodulePerm } from '@/api/project/module'
 import { getConfigPerm } from '@/api/project/config'
 import { getAccounts } from '@/api/account'
@@ -240,9 +240,10 @@ export default {
           limit: this.listQuery.limit,
           title: this.listQuery.value,
           group: this.group.id,
-          content_type: this.model.content_type.id
+          content_type: this.model.content_type.id,
+          with_perms: true
         }
-        getL2MenuListPerm(l2menutQuery).then(response => {
+        getL2Menu(l2menutQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
           this.obj_num = this.object_list.length
