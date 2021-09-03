@@ -223,6 +223,7 @@ export default {
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
       this.temp.parent = this.temp.parent.id
+      this.temp.content_type = this.temp.content_type.id
       this.dialogStatus = 'update'
       this.dialogVisible = true
     },
@@ -256,6 +257,11 @@ export default {
             duration: 2000
           })
           this.getList()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         })
       })
     }

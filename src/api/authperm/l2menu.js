@@ -9,7 +9,7 @@ export function getL2Menu(data) {
 }
 export function getL2MenuList(data) {
   return request({
-    url: '/api/l2menu-list/',
+    url: '/api/l2menu/',
     method: 'get',
     params: data
   })
