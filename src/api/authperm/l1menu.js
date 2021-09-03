@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getL1Menu(data) {
   return request({
-    url: '/api/l1menu-list/',
+    url: '/api/l1menu/',
     method: 'get',
     params: data
   })
