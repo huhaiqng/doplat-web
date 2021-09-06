@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // Group API
 export function getGroup(data) {
   return request({
-    url: '/api/getGroups/',
+    url: '/api/groups/',
     method: 'get',
     params: data
   })
@@ -34,8 +34,9 @@ export function updateGroup(data) {
 
 export function getGroupName() {
   return request({
-    url: '/api/group-name/',
-    method: 'get'
+    url: '/api/groups/',
+    method: 'get',
+    params: { name: true }
   })
 }
 
