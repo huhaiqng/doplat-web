@@ -40,7 +40,7 @@ import { getL2MenuContentType } from '@/api/authperm/l2menu'
 import { getHosts } from '@/api/project/host'
 import { getMySQL } from '@/api/project/mysql'
 import { getProjectPerm } from '@/api/project/project'
-import { getMiddlewarePerm } from '@/api/project/middleware'
+import { getMiddlewareList } from '@/api/project/middleware'
 import { getPermissionList } from '@/api/authperm/permission'
 import { getL2Menu } from '@/api/authperm/l2menu'
 import { getProjectmodule } from '@/api/project/module'
@@ -145,9 +145,10 @@ export default {
           limit: this.listQuery.limit,
           conn_addr: this.listQuery.value,
           group: this.group.id,
-          content_type: this.model.content_type.id
+          content_type: this.model.content_type.id,
+          with_perms: true
         }
-        getMiddlewarePerm(middlewareQuery).then(response => {
+        getMiddlewareList(middlewareQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
           this.obj_num = this.object_list.length

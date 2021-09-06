@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // Middleware
 export function getMiddlewareList(query) {
   return request({
-    url: '/api/middleware-list/',
+    url: '/api/middleware/',
     method: 'get',
     params: query
   })
@@ -26,13 +26,5 @@ export function deleteMiddleware(id) {
   return request({
     url: `/api/middleware/${id}/`,
     method: 'delete'
-  })
-}
-// Middleware Perm
-export function getMiddlewarePerm(query) {
-  return request({
-    url: '/api/middleware-perm/',
-    method: 'get',
-    params: query
   })
 }
