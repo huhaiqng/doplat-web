@@ -46,7 +46,7 @@ import { getL2Menu } from '@/api/authperm/l2menu'
 import { getProjectmodulePerm } from '@/api/project/module'
 import { getConfig } from '@/api/project/config'
 import { getAccounts } from '@/api/account'
-import { getUrlPerm } from '@/api/project/url'
+import { getUrl } from '@/api/project/url'
 import waves from '@/directive/waves'
 import { addGroupObjectPerm, deleteGroupObjectPerm } from '@/api/authperm/group'
 
@@ -193,9 +193,10 @@ export default {
           limit: this.listQuery.limit,
           name: this.listQuery.value,
           group: this.group.id,
-          content_type: this.model.content_type.id
+          content_type: this.model.content_type.id,
+          with_perms: true
         }
-        getUrlPerm(urlQuery).then(response => {
+        getUrl(urlQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
           this.obj_num = this.object_list.length
