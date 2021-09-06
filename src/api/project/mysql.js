@@ -28,11 +28,3 @@ export function deleteMySQL(id) {
     method: 'delete'
   })
 }
-// MySQL Perm
-export function getMySQLPerm(query) {
-  return request({
-    url: '/api/mysql-perm/',
-    method: 'get',
-    params: query
-  })
-}
