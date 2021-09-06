@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // Host
 export function getHosts(query) {
   return request({
-    url: '/api/getHosts/',
+    url: '/api/hosts/',
     method: 'get',
     params: query
   })
@@ -30,14 +30,15 @@ export function deleteHost(id) {
 }
 export function getHostsSimple() {
   return request({
-    url: '/api/hosts-simple/',
-    method: 'get'
+    url: '/api/hosts/',
+    method: 'get',
+    params: { simple: true }
   })
 }
 // Host Perm
 export function getHostsPerm(query) {
   return request({
-    url: '/api/host-perm/',
+    url: '/api/hosts/',
     method: 'get',
     params: query
   })

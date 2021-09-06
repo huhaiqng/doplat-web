@@ -111,7 +111,8 @@ export default {
           limit: this.listQuery.limit,
           inside_ip: this.listQuery.value,
           group: this.group.id,
-          content_type: this.model.id
+          content_type: this.model.id,
+          with_perms: true
         }
         getHostsPerm(hostQuery).then(response => {
           this.total = response.count
