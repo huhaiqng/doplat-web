@@ -37,7 +37,7 @@
 import Pagination from '@/components/Pagination'
 import { getGroupName } from '@/api/authperm/group'
 import { getL2MenuContentType } from '@/api/authperm/l2menu'
-import { getHostsPerm } from '@/api/project/host'
+import { getHosts } from '@/api/project/host'
 import { getMySQL } from '@/api/project/mysql'
 import { getProjectPerm } from '@/api/project/project'
 import { getMiddlewarePerm } from '@/api/project/middleware'
@@ -114,7 +114,7 @@ export default {
           content_type: this.model.id,
           with_perms: true
         }
-        getHostsPerm(hostQuery).then(response => {
+        getHosts(hostQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
           this.obj_num = this.object_list.length
