@@ -3,14 +3,7 @@ import request from '@/utils/request'
 // Config
 export function getConfig(query) {
   return request({
-    url: '/api/getConfig/',
-    method: 'get',
-    params: query
-  })
-}
-export function getConfigPerm(query) {
-  return request({
-    url: '/api/config-perm/',
+    url: '/api/config/',
     method: 'get',
     params: query
   })
