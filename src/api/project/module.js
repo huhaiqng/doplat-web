@@ -3,14 +3,7 @@ import request from '@/utils/request'
 // Config
 export function getProjectmodule(query) {
   return request({
-    url: '/api/projectmodule-list/',
-    method: 'get',
-    params: query
-  })
-}
-export function getProjectmodulePerm(query) {
-  return request({
-    url: '/api/projectmodule-perm/',
+    url: '/api/projectmodule/',
     method: 'get',
     params: query
   })
