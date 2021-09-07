@@ -30,8 +30,9 @@ export function deleteProject(id) {
 }
 export function getOneProjectInfo(id) {
   return request({
-    url: `/api/project-one/${id}/`,
-    method: 'get'
+    url: `/api/project/${id}/`,
+    method: 'get',
+    params: { 'retrieve': true }
   })
 }
 export function getProjectName(query) {
