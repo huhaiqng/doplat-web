@@ -158,7 +158,7 @@
 <script>
 import { getMiddlewareList, addMiddleware, updateMiddleware, deleteMiddleware } from '@/api/project/middleware'
 import { getEnv } from '@/api/project/env'
-import { getProjectNameNeedPerm } from '@/api/project/project'
+import { getProjectName } from '@/api/project/project'
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
 import { encrypt, decrypt } from '@/utils/aes'
@@ -220,7 +220,7 @@ export default {
     getEnv().then(response => {
       this.env_list = response
     })
-    getProjectNameNeedPerm().then(response => {
+    getProjectName().then(response => {
       this.project_list = response
     })
   },

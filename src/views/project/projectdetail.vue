@@ -143,7 +143,7 @@ export default {
     }
   },
   created() {
-    getProjectName().then(response => {
+    getProjectName({ need_perm: false }).then(response => {
       this.projects = response
 
       if (this.projects.length > 0) {

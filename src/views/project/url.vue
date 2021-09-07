@@ -90,7 +90,7 @@
 
 <script>
 import { addUrl, deleteUrl, updateUrl, getUrl } from '@/api/project/url'
-import { getProjectNameNeedPerm } from '@/api/project/project'
+import { getProjectName } from '@/api/project/project'
 import { getEnv } from '@/api/project/env'
 import Pagination from '@/components/Pagination'
 import store from '@/store'
@@ -133,7 +133,7 @@ export default {
   },
   created() {
     this.getList()
-    getProjectNameNeedPerm().then(response => {
+    getProjectName().then(response => {
       this.projectList = response
     })
     getEnv().then(response => {

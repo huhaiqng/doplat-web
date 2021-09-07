@@ -28,27 +28,16 @@ export function deleteProject(id) {
     method: 'delete'
   })
 }
-export function getProjectInfo() {
-  return request({
-    url: '/api/getProjectInfo/',
-    method: 'get'
-  })
-}
 export function getOneProjectInfo(id) {
   return request({
     url: `/api/project-one/${id}/`,
     method: 'get'
   })
 }
-export function getProjectName() {
+export function getProjectName(query) {
   return request({
     url: '/api/project-name/',
-    method: 'get'
-  })
-}
-export function getProjectNameNeedPerm() {
-  return request({
-    url: '/api/project-name-need-perm/',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }

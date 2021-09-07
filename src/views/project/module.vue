@@ -126,7 +126,7 @@
 
 <script>
 import { addProjectmodule, deleteProjectmodule, updateProjectmodule, getProjectmodule } from '@/api/project/module'
-import { getProjectNameNeedPerm } from '@/api/project/project'
+import { getProjectName } from '@/api/project/project'
 import Pagination from '@/components/Pagination'
 import store from '@/store'
 
@@ -170,7 +170,7 @@ export default {
   },
   created() {
     this.getList()
-    getProjectNameNeedPerm().then(response => {
+    getProjectName().then(response => {
       this.projectList = response
     })
     this.getPermStstus()
