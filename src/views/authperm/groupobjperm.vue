@@ -39,7 +39,7 @@ import { getGroupName } from '@/api/authperm/group'
 import { getL2MenuContentType } from '@/api/authperm/l2menu'
 import { getHosts } from '@/api/project/host'
 import { getMySQL } from '@/api/project/mysql'
-import { getProjectPerm } from '@/api/project/project'
+import { getProjectList } from '@/api/project/project'
 import { getMiddlewareList } from '@/api/project/middleware'
 import { getPermissionList } from '@/api/authperm/permission'
 import { getL2Menu } from '@/api/authperm/l2menu'
@@ -162,9 +162,10 @@ export default {
           limit: this.listQuery.limit,
           name: this.listQuery.value,
           group: this.group.id,
-          content_type: this.model.content_type.id
+          content_type: this.model.content_type.id,
+          with_perms: true
         }
-        getProjectPerm(projectQuery).then(response => {
+        getProjectList(projectQuery).then(response => {
           this.total = response.count
           this.object_list = response.results
           this.obj_num = this.object_list.length
