@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // Project
 export function getProjectList(query) {
   return request({
-    url: '/api/project-list/',
+    url: '/api/project/',
     method: 'get',
     params: query
   })
