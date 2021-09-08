@@ -14,9 +14,14 @@
           <span>{{ $index + 1 + (listQuery.page - 1)*listQuery.limit }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户名">
+      <el-table-column label="用户名" width="150px">
         <template slot-scope="{row}">
           <span>{{ row.username }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="姓名" width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.real_name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="手机号码">
@@ -29,9 +34,11 @@
           <span>{{ row.email }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="超级用户">
+      <el-table-column label="超级用户" align="center" width="80px">
         <template slot-scope="{row}">
-          <span>{{ row.is_superuser?"是":"否" }}</span>
+          <el-tag size="small" :type="row.is_superuser?'success':'info'">
+            {{ row.is_superuser?"是":"否" }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="早会主持">
@@ -61,6 +68,9 @@
       <el-form ref="temp" :model="temp" :rules="formRules" label-position="left" label-width="100px" style="margin-left:30px;margin-right:30px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="temp.username" style="width:60%" />
+        </el-form-item>
+        <el-form-item label="用户名" prop="real_name">
+          <el-input v-model="temp.real_name" style="width:60%" />
         </el-form-item>
         <el-form-item label="手机号码" prop="phone">
           <el-input ref="phone" v-model="temp.phone" style="width:60%" />
@@ -125,6 +135,7 @@ export default {
       total: 0,
       temp: {
         username: null,
+        real_name: null,
         password: null,
         confirm_password: null,
         is_superuser: false,
