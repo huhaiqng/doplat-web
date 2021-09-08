@@ -45,3 +45,11 @@ export function updateUser(data) {
     data
   })
 }
+
+export function resetPassword(data) {
+  return request({
+    url: '/api/reset-password/',
+    method: 'put',
+    data
+  })
+}

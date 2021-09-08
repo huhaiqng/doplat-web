@@ -192,15 +192,6 @@ export default {
       this.dialogVisible = true
       this.resetTemp()
       this.dialogStatus = 'create'
-      // this.getGroupList()
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row)
-      this.temp.groups = this.temp.groups.map(h => h.id)
-      this.dialogVisible = true
-      this.dialogStatus = 'edit'
-      this.setPasswordStatus = false
-      // this.getGroupList()
     },
     createData(userForm) {
       this.$refs[userForm].validate((valid) => {
@@ -217,6 +208,13 @@ export default {
           })
         }
       })
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row)
+      this.temp.groups = this.temp.groups.map(h => h.id)
+      this.dialogVisible = true
+      this.dialogStatus = 'edit'
+      this.setPasswordStatus = false
     },
     updateData(userForm) {
       if (this.setPasswordStatus) {
@@ -263,7 +261,6 @@ export default {
             duration: 2000
           })
           this.getList()
-          // this.list.splice(index, 1)
         })
       }).catch(() => {
         this.$message({

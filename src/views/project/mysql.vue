@@ -230,7 +230,6 @@ export default {
         this.permStatus.add = true
         this.permStatus.change = true
         this.permStatus.delete = true
-        console.log(this.permStatus)
       }
       if (this.my_perms.indexOf('add_mysql') > -1) {
         this.permStatus.add = true
@@ -241,7 +240,6 @@ export default {
       if (this.my_perms.indexOf('delete_mysql') > -1) {
         this.permStatus.delete = true
       }
-      console.log(this.my_perms)
     },
     restTemp() {
       this.temp = {
