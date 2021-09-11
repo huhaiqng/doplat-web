@@ -12,24 +12,29 @@
           <span>{{ $index + 1 + (queryList.page - 1)*queryList.limit }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目" width="300px">
+      <el-table-column label="项目">
         <template slot-scope="{row}">
           <span v-if="row.project">{{ row.project.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="名称" width="300px">
+      <el-table-column label="名称">
         <template slot-scope="{row}">
           <span>{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="地址">
+      <el-table-column label="地址" width="500px">
         <template slot-scope="{row}">
           <span class="link-type"><el-link type="primary" :underline="false" :href="row.url" target="_blank">{{ row.url }}</el-link></span>
         </template>
       </el-table-column>
-      <el-table-column label="环境" width="200">
+      <el-table-column label="环境" width="100px">
         <template slot-scope="{row}">
           <span v-if="row.env">{{ row.env.name }}</span>
+        </template>
+      </el-table-column>desc
+      <el-table-column label="备注" width="300pxsc">
+        <template slot-scope="{row}">
+          <span>{{ row.desc }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="150px">
@@ -53,12 +58,12 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="100px" style="margin-right:30px; margin-left:30px;">
         <el-form-item label="项目" prop="project">
-          <el-select v-model="temp.project" class="filter-item" filterable style="width:40%">
+          <el-select v-model="temp.project" class="filter-item" filterable clearable="" style="width:40%">
             <el-option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="环境" prop="env">
-          <el-select v-model="temp.env" class="filter-item" style="width:40%">
+          <el-select v-model="temp.env" class="filter-item" clearable style="width:40%">
             <el-option v-for="item in envList" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -67,6 +72,9 @@
         </el-form-item>
         <el-form-item label="地址" prop="url">
           <el-input v-model="temp.url" style="width:80%" />
+        </el-form-item>
+        <el-form-item label="备注" prop="desc">
+          <el-input v-model="temp.desc" style="width:80%" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -103,6 +111,7 @@ export default {
         name: null,
         env: null,
         url: null,
+        desc: null,
         created_at: null
       },
       queryList: {
@@ -167,6 +176,7 @@ export default {
         name: null,
         env: null,
         url: null,
+        desc: null,
         created_at: null
       }
     },
