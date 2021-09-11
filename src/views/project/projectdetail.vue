@@ -111,6 +111,30 @@
                     </el-table-column>
                   </el-table>
                 </el-tab-pane>
+                <el-tab-pane label="Jenkins Job" name="jenkinsjob">
+                  <el-table :key="0" :data="project.jenkinsjobs" border fit highlight-current-row style="width: 100%;">
+                    <el-table-column label="项目" width="300px">
+                      <template slot-scope="{row}">
+                        <span v-if="row.project">{{ row.project.name }}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="名称" width="300px">
+                      <template slot-scope="{row}">
+                        <span>{{ row.name }}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="地址">
+                      <template slot-scope="{row}">
+                        <span class="link-type"><el-link type="primary" :underline="false" :href="row.url" target="_blank">{{ row.url }}</el-link></span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="环境" width="200">
+                      <template slot-scope="{row}">
+                        <span v-if="row.env">{{ row.env.name }}</span>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-tab-pane>
               </el-tabs>
             </div>
           </el-scrollbar>
