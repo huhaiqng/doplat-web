@@ -113,14 +113,14 @@
                 </el-tab-pane>
                 <el-tab-pane label="Jenkins Job" name="jenkinsjob">
                   <el-table :key="0" :data="project.jenkinsjobs" border fit highlight-current-row style="width: 100%;">
-                    <el-table-column label="项目">
-                      <template slot-scope="{row}">
-                        <span v-if="row.project">{{ row.project.name }}</span>
-                      </template>
-                    </el-table-column>
                     <el-table-column label="名称">
                       <template slot-scope="{row}">
-                        <span>{{ row.name }}</span>
+                        <span class="link-type"><el-link type="primary" :underline="false" :href="row.url" target="_blank">{{ row.name }}</el-link></span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="环境">
+                      <template slot-scope="{row}">
+                        <span v-if="row.project">{{ row.env.name }}</span>
                       </template>
                     </el-table-column>
                     <el-table-column label="地址" width="600px">
