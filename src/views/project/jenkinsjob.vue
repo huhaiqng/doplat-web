@@ -201,7 +201,7 @@ export default {
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
       if (this.temp.project) {
-        this.temp.project = row.project.map(s => { return s.id })
+        this.temp.project = row.project.id
       }
       if (this.temp.env) {
         this.temp.env = row.env.id
