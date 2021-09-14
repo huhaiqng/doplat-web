@@ -1,9 +1,11 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="queryList.project" placeholder="项目" filterable clearable class="filter-item" style="width: 400px" @change="getList">
+      <el-select v-model="queryList.project" placeholder="项目" filterable clearable class="filter-item" @change="getList">
         <el-option v-for="item in projectList" :key="item.name" :label="item.name" :value="item.id" />
       </el-select>
+      <el-input v-model="queryList.name" placeholder="名称" style="width: 200px;" class="filter-item" @keyup.enter.native="getList" />
+      <el-button v-waves class="filter-item" type="primary" size="medium" icon="el-icon-search" @click="getList">搜索</el-button>
       <el-button v-if="permStatus.add" size="medium" class="filter-item" :loading="btnLoading" type="primary" @click="updateOrCreateJob">同步 Job</el-button>
     </div>
     <el-table :key="0" :data="list" border fit highlight-current-row style="width: 100%;">
@@ -115,6 +117,7 @@ export default {
         created_at: null
       },
       queryList: {
+        name: '',
         project: '',
         page: 0,
         limit: 10
