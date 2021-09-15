@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="queryList.project" placeholder="项目" filterable clearable class="filter-item" @change="getList">
+      <el-select v-model="queryList.project" placeholder="项目" filterable clearable class="filter-item" @change="handleFilter">
         <el-option v-for="item in projectList" :key="item.name" :label="item.name" :value="item.id" />
       </el-select>
       <el-input v-model="queryList.path_with_namespace" placeholder="路径" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
