@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column label="地址" width="500px">
         <template slot-scope="{row}">
-          <span class="link-type"><el-link type="primary" :underline="false" :href="row.url" target="_blank">{{ row.http_url_to_repo }}</el-link></span>
+          <span class="link-type"><el-link type="primary" :underline="false" :href="row.http_url_to_repo" target="_blank">{{ row.http_url_to_repo }}</el-link></span>
         </template>
       </el-table-column>
       <el-table-column label="备注" width="300pxsc">
