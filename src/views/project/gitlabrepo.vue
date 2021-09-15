@@ -4,7 +4,7 @@
       <el-select v-model="queryList.project" placeholder="项目" filterable clearable class="filter-item" @change="handleFilter">
         <el-option v-for="item in projectList" :key="item.name" :label="item.name" :value="item.id" />
       </el-select>
-      <el-input v-model="queryList.path_with_namespace" placeholder="路径" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="queryList.path_with_namespace" placeholder="组" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button v-waves class="filter-item" type="primary" size="medium" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button v-if="permStatus.add" size="medium" class="filter-item" :loading="btnLoading" type="primary" @click="createGitlabRepo">同步仓库</el-button>
     </div>
@@ -19,9 +19,14 @@
           <span v-if="row.project">{{ row.project.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="路径">
+      <el-table-column label="组">
         <template slot-scope="{row}">
-          <span>{{ row.path_with_namespace }}</span>
+          <span>{{ row.path_with_namespace.split("/")[0] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="名称">
+        <template slot-scope="{row}">
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="地址" width="500px">

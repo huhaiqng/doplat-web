@@ -115,17 +115,17 @@
                   <el-table :key="0" :data="project.jenkinsjobs" border fit highlight-current-row style="width: 100%;">
                     <el-table-column label="名称">
                       <template slot-scope="{row}">
-                        <span class="link-type"><el-link type="primary" :underline="false" :href="row.url" target="_blank">{{ row.name }}</el-link></span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column label="环境">
-                      <template slot-scope="{row}">
-                        <span v-if="row.env">{{ row.env.name }}</span>
+                        <span>{{ row.name }}</span>
                       </template>
                     </el-table-column>
                     <el-table-column label="地址" width="600px">
                       <template slot-scope="{row}">
                         <span class="link-type"><el-link type="primary" :underline="false" :href="row.url" target="_blank">{{ row.url }}</el-link></span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="环境">
+                      <template slot-scope="{row}">
+                        <span v-if="row.env">{{ row.env.name }}</span>
                       </template>
                     </el-table-column>
                     <el-table-column label="备注">
@@ -137,9 +137,9 @@
                 </el-tab-pane>
                 <el-tab-pane label="Jenkins 仓库" name="gitlabrepo">
                   <el-table :key="0" :data="project.gitlabrepos" border fit highlight-current-row style="width: 100%;">
-                    <el-table-column label="路径">
+                    <el-table-column label="名称">
                       <template slot-scope="{row}">
-                        <span class="link-type"><el-link type="primary" :underline="false" :href="row.http_url_to_repo" target="_blank">{{ row.path_with_namespace }}</el-link></span>
+                        <span>{{ row.name }}</span>
                       </template>
                     </el-table-column>
                     <el-table-column label="地址" width="600px">
