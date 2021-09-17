@@ -186,9 +186,9 @@ export default {
       type_options: ['redis', 'activemq', 'rabbitmq', 'zookeeper'],
       temp: {
         conn_addr: '',
-        web_addr: undefined,
-        username: undefined,
-        password: undefined,
+        web_addr: '',
+        username: '',
+        password: '',
         type: '',
         project: '',
         env: undefined,
@@ -234,7 +234,6 @@ export default {
     getPermStstus() {
       this.is_superuser = store.getters.is_superuser
       this.my_perms = store.getters.my_perms
-      console.log(this.is_superuser)
       if (this.is_superuser) {
         this.permStatus.add = true
         this.permStatus.change = true
@@ -283,7 +282,9 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.tempCopy = Object.assign({}, this.temp)
-          this.tempCopy.password = encrypt(this.tempCopy.password)
+          if (this.tempCopy.password) {
+            this.tempCopy.password = encrypt(this.tempCopy.password)
+          }
           addMiddleware(this.tempCopy).then(() => {
             this.getList()
             this.dialogVisible = false
@@ -301,7 +302,11 @@ export default {
       this.temp = Object.assign({}, row)
       this.temp.project = row.project.map(s => { return s.id })
       this.temp.env = row.env.id
-      this.temp.password = decrypt(this.temp.password)
+      if (this.temp.password) {
+        console.log(this.temp.password)
+        this.temp.password = decrypt(this.temp.password)
+        console.log(this.temp.password)
+      }
       this.dialogStatus = 'update'
       this.dialogVisible = true
     },
@@ -309,7 +314,9 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.tempCopy = Object.assign({}, this.temp)
-          this.tempCopy.password = encrypt(this.tempCopy.password)
+          if (this.tempCopy.password) {
+            this.tempCopy.password = encrypt(this.tempCopy.password)
+          }
           updateMiddleware(this.tempCopy).then(() => {
             this.getList()
             this.dialogVisible = false
