@@ -69,7 +69,7 @@
         <el-form-item label="用户名" prop="username">
           <el-input v-model="temp.username" style="width:60%" />
         </el-form-item>
-        <el-form-item label="用户名" prop="real_name">
+        <el-form-item label="姓名" prop="real_name">
           <el-input v-model="temp.real_name" style="width:60%" />
         </el-form-item>
         <el-form-item label="手机号码" prop="phone">
