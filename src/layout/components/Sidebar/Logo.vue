@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       title: '技术部平台',
-      logo: '/images/logo.jpg'
+      logo: '/images/logo.png'
     }
   }
 }
@@ -47,7 +47,8 @@ export default {
   height: 50px;
   line-height: 50px;
   background: #2b2f3a;
-  text-align: center;
+  padding-left: 20px;
+  // text-align: center;
   overflow: hidden;
 
   & .sidebar-logo-link {
@@ -55,8 +56,8 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 35px;
+      height: 35px;
       vertical-align: middle;
       margin-right: 12px;
     }
