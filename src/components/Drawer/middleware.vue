@@ -60,7 +60,7 @@
           <div class="drawer-item">
             <el-row>
               <el-col :span="8">集群：</el-col>
-              <el-col :span="16">{{ instance.clust }}</el-col>
+              <el-col :span="16">{{ instance.cluster }}</el-col>
             </el-row>
           </div>
 
