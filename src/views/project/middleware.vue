@@ -29,6 +29,11 @@
           <span>{{ $index + 1 + (listQuery.page - 1)*listQuery.limit }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="类别" width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.type }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="连接地址">
         <template slot-scope="{row}">
           <span class="link-type" @click="showDetail(row)">{{ row.conn_addr }}</span>
@@ -37,11 +42,6 @@
       <el-table-column label="Web 地址">
         <template slot-scope="{row}">
           <span class="link-type"><el-link type="primary" :underline="false" :href="row.web_addr" target="_blank">{{ row.web_addr }}</el-link></span>
-        </template>
-      </el-table-column>
-      <el-table-column label="类别" width="150px">
-        <template slot-scope="{row}">
-          <span>{{ row.type }}</span>
         </template>
       </el-table-column>
       <el-table-column label="集群" width="150px">
