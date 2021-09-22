@@ -135,7 +135,7 @@
                     </el-table-column>
                   </el-table>
                 </el-tab-pane>
-                <el-tab-pane label="Jenkins 仓库" name="gitlabrepo">
+                <el-tab-pane label="Gitlab 仓库" name="gitlabrepo">
                   <el-table :key="0" :data="project.gitlabrepos" border fit highlight-current-row style="width: 100%;">
                     <el-table-column label="名称">
                       <template slot-scope="{row}">
