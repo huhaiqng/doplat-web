@@ -14,14 +14,19 @@
           <span>{{ $index + 1 + (queryList.page - 1)*queryList.limit }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目" width="300px">
+      <el-table-column label="项目" width="200px">
         <template slot-scope="{row}">
           <span>{{ row.project.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="名称" width="300px">
+      <el-table-column label="名称" width="200px">
         <template slot-scope="{row}">
           <span>{{ row.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="简称" width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.alias }}</span>
         </template>
       </el-table-column>
       <el-table-column label="地址">
@@ -29,9 +34,21 @@
           <span class="link-type"><el-link type="primary" :underline="false" :href="row.url" target="_blank">{{ row.url }}</el-link></span>
         </template>
       </el-table-column>
-      <el-table-column label="环境" width="200">
+      <el-table-column label="环境" width="120px">
         <template slot-scope="{row}">
           <span>{{ row.env.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="主机" width="200px">
+        <template slot-scope="{row}">
+          <span v-for="h in row.hosts" :key="h.id">
+            <div>{{ h.name }}: {{ h.inside_ip }}</div>
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column label="公网 IP" width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.public_ip }}</span>
         </template>
       </el-table-column>
       <el-table-column label="常用的" width="80px" align="center">
@@ -56,21 +73,53 @@
     <pagination v-show="total>0" :total="total" :page.sync="queryList.page" :limit.sync="queryList.limit" @pagination="getList" />
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="100px" style="margin-right:30px; margin-left:30px;">
-        <el-form-item label="项目" prop="project">
-          <el-select v-model="temp.project" class="filter-item" filterable style="width:40%">
-            <el-option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="环境" prop="env">
-          <el-select v-model="temp.env" class="filter-item" style="width:40%">
-            <el-option v-for="item in envList" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="名称" prop="cluster">
-          <el-input v-model="temp.name" style="width:40%" />
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="项目" prop="project">
+              <el-select v-model="temp.project" class="filter-item" filterable style="width:80%">
+                <el-option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="环境" prop="env">
+              <el-select v-model="temp.env" class="filter-item" style="width:80%">
+                <el-option v-for="item in envList" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="名称" prop="cluster">
+              <el-input v-model="temp.name" style="width:80%" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="简称" prop="alias">
+              <el-input v-model="temp.alias" style="width:80%" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="主机" prop="hosts">
+              <el-select v-model="temp.hosts" class="filter-item" filterable clearable multiple style="width:80%">
+                <el-option v-for="item in host_list" :key="item.id" :label="item.inside_ip" :value="item.id" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="部署路径" prop="deploy_dir">
+              <el-input v-model="temp.deploy_dir" style="width:80%" />
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="地址" prop="url">
           <el-input v-model="temp.url" style="width:80%" />
+        </el-form-item>
+        <el-form-item label="公网 IP" prop="public_ip">
+          <el-input v-model="temp.public_ip" style="width:80%" />
         </el-form-item>
         <el-form-item label="常用的" prop="popular">
           <el-checkbox v-model="temp.popular" />
@@ -91,6 +140,7 @@
 <script>
 import { addUrl, deleteUrl, updateUrl, getUrl } from '@/api/project/url'
 import { getProjectName } from '@/api/project/project'
+import { getHostsSimple } from '@/api/project/host'
 import { getEnv } from '@/api/project/env'
 import Pagination from '@/components/Pagination'
 import store from '@/store'
@@ -103,13 +153,18 @@ export default {
       list: null,
       projectList: [],
       envList: [],
+      host_list: null,
       total: 0,
       temp: {
         project: null,
         name: null,
+        alias: undefined,
+        hosts: undefined,
+        deploy_dir: '/data/www',
         env: null,
         url: null,
-        popular: false
+        popular: false,
+        public_ip: undefined
       },
       queryList: {
         project: '',
@@ -148,6 +203,11 @@ export default {
         this.total = response.count
       })
     },
+    getHosts() {
+      getHostsSimple().then(response => {
+        this.host_list = response
+      })
+    },
     getPermStstus() {
       this.is_superuser = store.getters.is_superuser
       this.my_perms = store.getters.my_perms
@@ -179,6 +239,7 @@ export default {
       this.dialogStatus = 'create'
       this.dialogVisible = true
       this.restTemp()
+      this.getHosts()
     },
     createData() {
       addUrl(this.temp).then(response => {
@@ -218,8 +279,10 @@ export default {
       this.temp = Object.assign({}, row)
       this.temp.project = this.temp.project.id
       this.temp.env = this.temp.env.id
+      this.temp.hosts = row.hosts.map(s => { return s.id })
       this.dialogStatus = 'edit'
       this.dialogVisible = true
+      this.getHosts()
     },
     updateData() {
       updateUrl(this.temp).then(() => {
