@@ -39,10 +39,10 @@
           <span>{{ row.env.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="主机" width="200px">
+      <el-table-column label="主机" width="150px">
         <template slot-scope="{row}">
           <span v-for="h in row.hosts" :key="h.id">
-            <div>{{ h.name }}: {{ h.inside_ip }}</div>
+            <div>{{ h.inside_ip }}</div>
           </span>
         </template>
       </el-table-column>
