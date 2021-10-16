@@ -21,7 +21,7 @@
                     fit
                     highlight-current-row
                   >
-                    <el-table-column label="名称-环境" width="400px">
+                    <el-table-column label="环境-名称" width="400px">
                       <template slot-scope="{row}">
                         <span class="link-type"><a :href="row.url" target="_blank">{{ row.env.name }} - {{ row.name }}</a></span>
                       </template>
