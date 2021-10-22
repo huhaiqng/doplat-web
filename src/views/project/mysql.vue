@@ -1,14 +1,14 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="queryList.inside_addr" placeholder="内网地址" style="width:200px" class="filter-item" @keyup.enter.native="getList" />
+      <el-input v-model="queryList.inside_addr" placeholder="内网地址" style="width:200px" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="queryList.env" placeholder="环境" clearable class="filter-item" style="width: 200px">
         <el-option v-for="item in env_list" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
       <el-select v-model="queryList.project" placeholder="项目" filterable clearable class="filter-item" style="width: 200px">
         <el-option v-for="item in project_list" :key="item.name" :label="item.name" :value="item.id" />
       </el-select>
-      <el-button class="filter-item" size="medium" type="primary" icon="el-icon-search" @click="getList">
+      <el-button class="filter-item" size="medium" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
       <el-button v-if="permStatus.add" size="medium" class="filter-item" icon="el-icon-edit" type="primary" @click="handleCreate">
@@ -361,6 +361,10 @@ export default {
           duration: 2000
         })
       })
+    },
+    handleFilter() {
+      this.queryList.page = 1
+      this.getList()
     },
     showDetail(row) {
       this.instance = Object.assign({}, row)
