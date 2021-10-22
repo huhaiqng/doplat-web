@@ -2,6 +2,9 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="queryList.inside_addr" placeholder="内网地址" style="width:200px" class="filter-item" @keyup.enter.native="getList" />
+      <el-select v-model="queryList.env" placeholder="环境" clearable class="filter-item" style="width: 200px">
+        <el-option v-for="item in env_list" :key="item.id" :label="item.name" :value="item.id" />
+      </el-select>
       <el-select v-model="queryList.project" placeholder="项目" filterable clearable class="filter-item" style="width: 200px">
         <el-option v-for="item in project_list" :key="item.name" :label="item.name" :value="item.id" />
       </el-select>
@@ -50,9 +53,9 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="来源" width="120px">
+      <el-table-column label="环境" width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.origin }}</span>
+          <span v-if="row.env">{{ row.env.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="备注">
@@ -159,6 +162,13 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="环境" prop="env">
+              <el-select v-model="temp.env" class="filter-item" style="width:80%">
+                <el-option v-for="item in env_list" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -181,6 +191,7 @@ import { addMySQL, deleteMySQL, updateMySQL, getMySQL } from '@/api/project/mysq
 import Pagination from '@/components/Pagination'
 import MysqlDrawer from '@/components/Drawer/mysql'
 import { getProjectName } from '@/api/project/project'
+import { getEnv } from '@/api/project/env'
 import { encrypt, decrypt } from '@/utils/aes'
 import store from '@/store'
 
@@ -191,6 +202,7 @@ export default {
     return {
       list: null,
       project_list: null,
+      env_list: null,
       total: 0,
       temp: {
         inside_addr: undefined,
@@ -204,12 +216,14 @@ export default {
         origin: '自建',
         cluster: undefined,
         project: '',
+        env: '',
         created: new Date()
       },
       tempCopy: undefined,
       queryList: {
         inside_addr: '',
         project: '',
+        env: '',
         page: 0,
         limit: 10
       },
@@ -234,6 +248,9 @@ export default {
     this.getList()
     this.getPermStstus()
 
+    getEnv().then(response => {
+      this.env_list = response
+    })
     getProjectName().then(response => {
       this.project_list = response
     })
@@ -276,6 +293,7 @@ export default {
         origin: '自建',
         cluster: undefined,
         project: '',
+        env: '',
         created: new Date()
       }
     },
@@ -286,6 +304,10 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
+      this.temp.project = row.project.map(s => { return s.id })
+      if (this.temp.env) {
+        this.temp.env = row.env.id
+      }
       this.temp.password = decrypt(this.temp.password)
       this.dialogStatus = 'edit'
       this.dialogVisible = true
