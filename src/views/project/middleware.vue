@@ -8,6 +8,9 @@
       <el-select v-model="listQuery.env" placeholder="环境" clearable class="filter-item" style="width: 200px">
         <el-option v-for="item in env_list" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
+      <el-select v-model="listQuery.project" placeholder="项目" filterable clearable class="filter-item" style="width: 200px">
+        <el-option v-for="item in project_list" :key="item.name" :label="item.name" :value="item.id" />
+      </el-select>
       <el-button v-waves class="filter-item" size="medium" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -180,6 +183,7 @@ export default {
         conn_ip: '',
         type: '',
         env: '',
+        project: '',
         page: 1,
         limit: 10
       },
