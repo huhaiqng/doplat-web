@@ -1,7 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="queryList.inside_addr" placeholder="内网地址" style="width:400px" class="filter-item" @keyup.enter.native="getList" />
+      <el-input v-model="queryList.inside_addr" placeholder="内网地址" style="width:200px" class="filter-item" @keyup.enter.native="getList" />
+      <el-select v-model="queryList.project" placeholder="项目" filterable clearable class="filter-item" style="width: 200px">
+        <el-option v-for="item in project_list" :key="item.name" :label="item.name" :value="item.id" />
+      </el-select>
       <el-button class="filter-item" size="medium" type="primary" icon="el-icon-search" @click="getList">
         搜索
       </el-button>
@@ -25,7 +28,7 @@
           <span>{{ row.outside_addr }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="角色">
+      <el-table-column label="角色" width="80px">
         <template slot-scope="{row}">
           <span>{{ row.role }}</span>
         </template>
@@ -35,17 +38,19 @@
           <span>{{ row.data_dir }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="版本号">
+      <el-table-column label="版本号" width="80px">
         <template slot-scope="{row}">
           <span>{{ row.version }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="部署方式">
+      <el-table-column label="项目">
         <template slot-scope="{row}">
-          <span>{{ row.method }}</span>
+          <span v-for="p in row.project" :key="p.id">
+            <div>{{ p.name }}</div>
+          </span>
         </template>
       </el-table-column>
-      <el-table-column label="来源">
+      <el-table-column label="来源" width="120px">
         <template slot-scope="{row}">
           <span>{{ row.origin }}</span>
         </template>
@@ -55,7 +60,7 @@
           <span>{{ row.cluster }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间">
+      <el-table-column label="创建时间" width="150px">
         <template slot-scope="{row}">
           <span>{{ row.created | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -146,6 +151,15 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="项目" prop="project">
+              <el-select v-model="temp.project" class="filter-item" filterable clearable multiple style="width:80%">
+                <el-option v-for="item in project_list" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="medium" @click="dialogVisible = false">
@@ -166,6 +180,7 @@
 import { addMySQL, deleteMySQL, updateMySQL, getMySQL } from '@/api/project/mysql'
 import Pagination from '@/components/Pagination'
 import MysqlDrawer from '@/components/Drawer/mysql'
+import { getProjectName } from '@/api/project/project'
 import { encrypt, decrypt } from '@/utils/aes'
 import store from '@/store'
 
@@ -175,6 +190,7 @@ export default {
   data() {
     return {
       list: null,
+      project_list: null,
       total: 0,
       temp: {
         inside_addr: undefined,
@@ -187,11 +203,13 @@ export default {
         method: 'normal',
         origin: '自建',
         cluster: undefined,
+        project: '',
         created: new Date()
       },
       tempCopy: undefined,
       queryList: {
         inside_addr: '',
+        project: '',
         page: 0,
         limit: 10
       },
@@ -215,6 +233,10 @@ export default {
   created() {
     this.getList()
     this.getPermStstus()
+
+    getProjectName().then(response => {
+      this.project_list = response
+    })
   },
   methods: {
     getList() {
@@ -253,6 +275,7 @@ export default {
         method: 'normal',
         origin: '自建',
         cluster: undefined,
+        project: '',
         created: new Date()
       }
     },
